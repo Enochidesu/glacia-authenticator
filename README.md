@@ -4,7 +4,7 @@ The public homepage, privacy policy and terms of use for Glacia Authenticator, c
 
 Static HTML, CSS, and original SVG artwork. No build step, external fonts, analytics, or client-side scripts.
 
-Download the Windows testing [pre-release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.4.1). Google branding verification is still pending.
+Download the Windows testing [pre-release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.4.2). Google branding verification is still pending.
 
 GitHub Pages: publish from the `main` branch, root folder. This repository contains the public website and release downloads; no app vaults, credentials, or private source history.
 
