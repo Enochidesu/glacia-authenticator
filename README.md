@@ -1,6 +1,6 @@
 # Glacia Authenticator website
 
-The public homepage and privacy policy for Glacia Authenticator, created by Enochi Sasaina as part of Winter Garden Project.
+The public homepage, privacy policy and terms of use for Glacia Authenticator, created by Enochi Sasaina as part of Winter Garden Project.
 
 Static HTML, CSS, and original SVG artwork. No build step, external fonts, analytics, or client-side scripts.
 
