@@ -1,0 +1,27 @@
+{
+  "appId": "project.wintergarden.glacia.authenticator",
+  "productName": "Glacia Authenticator",
+  "copyright": "Copyright 2026 Enochi Sasaina",
+  "directories": { "output": "../../outputs/installer", "buildResources": "." },
+  "win": {
+    "target": [ { "target": "nsis", "arch": [ "x64" ] } ],
+    "icon": "winterbell.ico",
+    "signAndEditExecutable": false
+  },
+  "nsis": {
+    "artifactName": "Glacia Authenticator Setup ${version}.exe",
+    "oneClick": false,
+    "perMachine": false,
+    "allowElevation": false,
+    "allowToChangeInstallationDirectory": true,
+    "include": "../installer-options.nsh",
+    "license": "../installer-agreement.txt",
+    "createDesktopShortcut": false,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Glacia Authenticator",
+    "runAfterFinish": false,
+    "deleteAppDataOnUninstall": false,
+    "installerIcon": "winterbell.ico",
+    "uninstallerIcon": "winterbell.ico"
+  }
+}

@@ -1,0 +1,29 @@
+'use strict';
+const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict');
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),{createStartupController}=require(path.join(appDir,'startup.cjs')),exe=path.resolve(appDir,'../../Glacia Authenticator.exe');
+const resultFile=path.join(__dirname,'native-startup-result.json');process.env.WINTERBELL_DATA_DIR=path.join(__dirname,'startup-native-'+Date.now());
+const handlers=new Map(),errors=[],writes=[];let main,entry=null,failWrite=false,finished=false;
+const adapter={isPackaged:true,getLoginItemSettings:options=>{assert.deepEqual(options,{path:'"'+exe+'"',args:[]});return {openAtLogin:false,launchItems:entry?[entry]:[]};},setLoginItemSettings:settings=>{if(failWrite)throw Error('Synthetic Windows startup failure');writes.push(settings);entry=settings.openAtLogin?{name:settings.name,path:settings.path,args:settings.args,scope:'user',enabled:settings.enabled}:null;}};
+function finish(ok,error){if(finished)return;finished=true;fs.writeFileSync(resultFile,JSON.stringify({ok,error,syntheticProfile:true,simulatedWindowsSettings:true,rendererErrors:errors,toggle:true,registrationTarget:true,externalDisable:true,failedUpdate:true,trustedSenderOnly:true,lockedRequestRejected:true}));electron.app.exit(ok?0:1);}
+process.on('uncaughtException',e=>finish(false,e.stack));process.on('unhandledRejection',e=>finish(false,e.stack));
+const load=Module._load;Module._load=function(name,parent,isMain){if(name==='./startup.cjs'&&parent?.filename===path.join(appDir,'main.cjs'))return {createStartupController:()=>createStartupController(adapter,{platform:'win32',execPath:exe})};if(name==='electron')return {...electron,BrowserWindow:class extends electron.BrowserWindow{constructor(options){super({...options,show:false,webPreferences:{...options.webPreferences,backgroundThrottling:false}});if(options.title!=='Glacia mini')main=this;}},ipcMain:{handle:(name,fn)=>{handlers.set(name,fn);electron.ipcMain.handle(name,fn);}}};return load.apply(this,arguments);};
+const pause=ms=>new Promise(r=>setTimeout(r,ms)),js=code=>main.webContents.executeJavaScript(code);
+const wait=async p=>{for(let i=0;i<350;i++){if(await p())return;await pause(20);}throw Error('Startup UI did not reach expected state.');};
+const raw=async(name,arg,sender=main.webContents)=>handlers.get('winterbell:'+name)({sender,senderFrame:sender.mainFrame},arg);
+const call=async(name,arg)=>{const result=await raw(name,arg);if(!result.ok)throw Error(result.error);return result.data;};
+async function test(){try{
+ await wait(()=>main&&!main.webContents.isLoading());await call('unlock',{password:'123456',remember:false});await wait(()=>js("document.querySelector('#wb-locked').hidden"));
+ await js("document.querySelector('[data-page=settings]').click()");await wait(()=>js("!!document.querySelector('#wb-start-with-windows')"));await pause(50);
+ assert.equal(await js("document.querySelector('#wb-start-with-windows').getAttribute('role')"),'switch');assert.equal(await js("document.querySelector('#wb-start-with-windows').getAttribute('aria-checked')"),'false');assert.equal(writes.length,0);
+ await js("document.querySelector('#wb-start-with-windows').click()");await wait(()=>js("document.querySelector('#wb-start-with-windows').getAttribute('aria-checked')==='true'&&!document.querySelector('#wb-start-with-windows').disabled"));assert.deepEqual(writes[0],{path:exe,args:[],name:'Glacia Authenticator',openAtLogin:true,enabled:true});
+ await js("document.querySelector('#wb-start-with-windows').click()");await wait(()=>js("document.querySelector('#wb-startup-label').textContent==='Off'&&!document.querySelector('#wb-start-with-windows').disabled"));assert.equal(entry,null);
+ await js("document.querySelector('#wb-start-with-windows').click()");await wait(()=>js("document.querySelector('#wb-startup-label').textContent==='On'&&!document.querySelector('#wb-start-with-windows').disabled"));entry.enabled=false;
+ await wait(()=>js("document.querySelector('#wb-startup-label').textContent==='Off'"));await js("document.querySelector('#wb-start-with-windows').click()");await wait(()=>js("document.querySelector('#wb-startup-label').textContent==='On'&&!document.querySelector('#wb-start-with-windows').disabled"));
+ const count=writes.length;await js("var appearance=document.querySelector('#wb-appearance');appearance.value='dark';appearance.dispatchEvent(new Event('change',{bubbles:true}))");await wait(async()=>(await call('status')).preferences.dark===true);await pause(420);assert.equal(writes.length,count);
+ fs.writeFileSync(path.join(__dirname,'startup-native-preview.png'),(await main.webContents.capturePage()).toPNG());
+ failWrite=true;await js("document.querySelector('#wb-start-with-windows').click()");await wait(()=>js("document.querySelector('#wb-toast').textContent.includes('Synthetic Windows startup failure')&&!document.querySelector('#wb-start-with-windows').disabled"));assert.equal(await js("document.querySelector('#wb-startup-label').textContent"),'On');failWrite=false;
+ const outsider=new electron.BrowserWindow({show:false});assert.equal((await raw('setStartup',{enabled:false},outsider.webContents)).ok,false);outsider.destroy();assert.equal((await raw('setStartup',{enabled:'true'})).ok,false);
+ await call('lock');assert.equal((await raw('setStartup',{enabled:false})).ok,false);assert.equal(writes.length,count);assert.equal(errors.length,0);finish(true);
+ }catch(error){finish(false,error.stack);}}
+electron.app.on('browser-window-created',(_event,w)=>w.webContents.on('console-message',d=>{if(d.level==='error')errors.push(d.message);}));
+setTimeout(()=>finish(false,'Startup UI native test timed out'),25000).unref();require(path.join(appDir,'main.cjs'));test();

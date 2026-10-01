@@ -1,0 +1,9 @@
+{
+  "name": "glacia-release-tools",
+  "private": true,
+  "version": "1.0.0",
+  "devDependencies": {
+    "rcedit": "5.0.2",
+    "electron-builder": "26.15.3"
+  }
+}

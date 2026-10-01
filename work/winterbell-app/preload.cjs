@@ -1,0 +1,11 @@
+'use strict';
+const {contextBridge,ipcRenderer}=require('electron');
+const methods=['status','openPublicPage','windowAction','openMainWindow','closeMiniWindow','trayMenuOpen','traySelect','touch','unlock','resumeLogin','forgetLogin','lock','signOut','add','favorite','renameAccount','moveAccount','saveFolder','deleteFolder','reorderAccounts','prepareDelete','cancelDelete','deleteAccount','copy','showQR','setStartup','preferences','chooseImport','decryptImport','stageText','commitImport','cancelImport','export','exportText','chooseQR','cloudVaults','googleOnboard','stageQR','cloudSignIn','cloudCancelSignIn','cloudDisconnect','cloudEnable','cloudPause','cloudSync'];
+const api={};for(const name of methods)api[name]=async arg=>{const result=await ipcRenderer.invoke('winterbell:'+name,arg);if(!result.ok)throw new Error(result.error);return result.data;};
+api.onLocked=callback=>{const listener=()=>callback();ipcRenderer.on('winterbell:locked',listener);return ()=>ipcRenderer.removeListener('winterbell:locked',listener);};
+api.onCloudChanged=callback=>{const listener=()=>callback();ipcRenderer.on('winterbell:cloud-changed',listener);return ()=>ipcRenderer.removeListener('winterbell:cloud-changed',listener);};
+api.onNavigate=callback=>{const listener=(_event,page)=>callback(page);ipcRenderer.on('winterbell:navigate',listener);return ()=>ipcRenderer.removeListener('winterbell:navigate',listener);};
+api.onMiniReset=callback=>{const listener=()=>callback();ipcRenderer.on('winterbell:mini-reset',listener);return ()=>ipcRenderer.removeListener('winterbell:mini-reset',listener);};
+api.onWindowState=callback=>{const listener=(_event,state)=>callback(state);ipcRenderer.on('winterbell:window-state',listener);return ()=>ipcRenderer.removeListener('winterbell:window-state',listener);};
+api.onLanguageChanged=callback=>{const listener=(_event,language)=>callback(language);ipcRenderer.on('winterbell:language-changed',listener);return ()=>ipcRenderer.removeListener('winterbell:language-changed',listener);};
+contextBridge.exposeInMainWorld('winterbell',api);

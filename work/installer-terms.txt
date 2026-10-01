@@ -1,0 +1,35 @@
+GLACIA AUTHENTICATOR - TERMS OF USE
+
+Last updated: October 1, 2026
+
+Glacia Authenticator is a Windows app created by Enochi Sasaina as part of Winter Garden Project. These terms describe using Glacia for your two-step verification codes.
+
+1. Using Glacia
+
+You may use Glacia to manage authenticator keys for accounts you own or are authorized to access. Use it lawfully and do not use it to access another person's accounts without permission. Glacia is an independent app; it is not affiliated with Google or the services whose codes you store.
+
+2. Your passwords and backups
+
+You are responsible for keeping your Windows account, vault password, backup password, and sync password secure. Keep an independent encrypted backup and the recovery codes provided by your account services. The developer cannot recover forgotten passwords or decrypt your vault for you.
+
+Plaintext exports and setup QR codes contain authenticator secrets. Protect them as carefully as your passwords. Removing a key from Glacia does not turn off two-step verification at the original service; manage that setting with the service itself.
+
+3. Optional Google services
+
+Google sign-in and encrypted Google Drive sync are optional. Their availability depends on your connection, Google account, and Google's services and terms. Glacia uses its own Drive application data; it cannot directly restore Google Authenticator's cloud backups. Review Glacia's privacy policy (https://enochidesu.github.io/glacia-authenticator/privacy.html) for how information is handled.
+
+4. Availability and support
+
+Glacia's features and compatibility may change with updates. No guarantee is made that every account service, device, or import format will work. Keep your recovery options available, and test a backup before relying on it. Support is available at enochi3317@gmail.com; no response time is promised. Do not send passwords or authenticator secrets.
+
+5. Original work and third-party components
+
+Glacia's original branding and website content belong to Enochi Sasaina. Third-party components remain subject to their own licenses and notices included with the app. These terms do not replace those licenses or grant ownership of the Glacia brand.
+
+6. Your rights and changes
+
+These terms do not limit rights that applicable law does not allow to be limited. Changes to these terms will appear on this page with an updated date. Questions can be sent to enochi3317@gmail.com.
+
+Online terms: https://enochidesu.github.io/glacia-authenticator/terms.html
+
+Privacy policy: https://enochidesu.github.io/glacia-authenticator/privacy.html

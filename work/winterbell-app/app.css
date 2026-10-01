@@ -1,0 +1,91 @@
+html,body{margin:0;min-height:100%;background:#f3f8fc}body{font-family:'Segoe UI',sans-serif}#winterbell-ui{border-radius:0;border:0;min-height:100vh}#winterbell-ui .wb-shell{min-height:calc(100vh - 45px)}#winterbell-ui .wb-code-actions{display:flex;gap:2px;align-items:center}#winterbell-ui .wb-cycle{display:none}#winterbell-ui .wb-transfer-qr{display:block;background:#fff;width:300px;height:auto;max-width:100%;margin:20px auto;border-radius:12px}#winterbell-ui .wb-modal{width:480px}#winterbell-ui .wb-modal textarea{display:block;width:100%;margin-top:5px;resize:vertical;min-height:120px;padding:10px;border:1px solid var(--wb-line);border-radius:8px;background:var(--wb-bg);color:var(--wb-text);font:13px/1.5 'Consolas',monospace}#winterbell-ui .wb-modal summary:focus-visible{outline:3px solid var(--wb-blue)}#winterbell-ui .wb-unlock-fields{max-width:350px;margin:0 auto;text-align:left}#winterbell-ui .wb-unlock-fields label{display:block;font-size:12px;color:var(--wb-muted);margin-top:15px}#winterbell-ui .wb-unlock-fields input{display:block;width:100%;margin-top:6px;padding:12px;background:var(--wb-panel);border:1px solid var(--wb-line);border-radius:10px;color:var(--wb-text);font-size:14px}#winterbell-ui .wb-unlock-fields .wb-primary{width:100%;margin-top:20px}#winterbell-ui .wb-unlock-fields .wb-password-note{font-size:11px;text-align:center;margin-top:18px}#winterbell-ui .wb-lock{padding-top:70px}#winterbell-ui .wb-lock .wb-logo{transform:none}#winterbell-ui .wb-lock .wb-logo .wb-icon{transform:none}#winterbell-ui .wb-import-list{max-height:350px;overflow:auto;margin-top:15px;padding:2px 4px 2px 2px}#winterbell-ui .wb-phone-account{display:flex;align-items:center;gap:12px;padding:12px;background:var(--wb-bg);border:1px solid var(--wb-line);border-radius:10px;margin:9px 0;width:100%;text-align:left}#winterbell-ui .wb-phone-account>span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}#winterbell-ui .wb-phone-account strong{display:block;font-size:13px;font-weight:600}#winterbell-ui .wb-phone-account small{display:block;font-size:11px;color:var(--wb-muted)}#winterbell-ui .wb-phone-account:hover{border-color:var(--wb-blue)}#winterbell-ui [inert]{opacity:.8}#winterbell-ui .wb-lock{min-height:600px}@media(max-width:1000px){#winterbell-ui .wb-code{font-size:26px;letter-spacing:.3px}#winterbell-ui .wb-icon-button{width:29px}}@media(max-width:700px){#winterbell-ui .wb-code{font-size:30px}#winterbell-ui .wb-code-actions .wb-icon-button{width:34px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+#winterbell-ui .wb-cloud-card{padding:25px;margin:20px 0;border:1px solid var(--wb-line);border-radius:16px;background:var(--wb-panel)}#winterbell-ui .wb-cloud-card h2{font-size:22px;margin:15px 0 7px}#winterbell-ui .wb-cloud-card p{font-size:12px;color:var(--wb-muted);margin:8px 0;overflow-wrap:anywhere}#winterbell-ui .wb-cloud-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}#winterbell-ui .wb-setup-steps{padding-left:22px;font-size:13px;color:var(--wb-muted)}#winterbell-ui .wb-setup-steps li{margin:12px 0}#winterbell-ui .wb-cloud-card .wb-form-error{color:#c74343}
+#winterbell-ui{padding-top:44px}
+#winterbell-ui .wb-titlebar{height:44px;padding:0 138px 0 20px;position:fixed;top:0;left:0;right:0;z-index:20;app-region:drag;-webkit-app-region:drag;user-select:none}
+#winterbell-ui .wb-shell{min-height:calc(100vh - 44px)}
+#winterbell-ui .wb-footer-credit{display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:auto;text-align:right}
+#winterbell-ui,#winterbell-ui *{transition:background-color 320ms ease-out,color 320ms ease-out,border-color 320ms ease-out,box-shadow 320ms ease-out}
+#winterbell-ui .wb-theme-toggle .wb-switch{justify-content:flex-start}
+#winterbell-ui .wb-theme-toggle .wb-switch:after{transition:transform 320ms cubic-bezier(.22,1,.36,1),background-color 320ms ease-out;transform:translateX(0)}
+#winterbell-ui .wb-theme-toggle[data-on=true] .wb-switch:after{transform:translateX(11px)}
+#winterbell-ui #wb-theme-icon{position:relative}
+#winterbell-ui #wb-theme-icon svg{position:absolute;transition:opacity 240ms ease-out,transform 320ms cubic-bezier(.22,1,.36,1)}
+#winterbell-ui .wb-theme-sun{opacity:1;transform:rotate(0) scale(1)}
+#winterbell-ui .wb-theme-moon{opacity:0;transform:rotate(-70deg) scale(.65)}
+#winterbell-ui[data-theme=dark] .wb-theme-sun{opacity:0;transform:rotate(70deg) scale(.65)}
+#winterbell-ui[data-theme=dark] .wb-theme-moon{opacity:1;transform:rotate(0) scale(1)}
+@media(prefers-reduced-motion:reduce){#winterbell-ui,#winterbell-ui *,#winterbell-ui *:after{transition:none!important}}
+
+#winterbell-ui .wb-brand-maker{font-size:10px;color:var(--wb-muted);margin-top:3px}
+
+#winterbell-ui .wb-unlock-fields .wb-remember-login{display:flex;align-items:center;gap:9px;cursor:pointer;color:var(--wb-text)}
+#winterbell-ui .wb-unlock-fields .wb-remember-login input{width:16px;height:16px;margin:0;padding:0;accent-color:var(--wb-blue)}
+#winterbell-ui .wb-remember-note{font-size:11px;color:var(--wb-muted);margin-top:7px;text-align:left}
+
+#winterbell-ui .wb-account-header-actions{display:flex;align-items:center;gap:3px;flex-shrink:0}
+#winterbell-ui .wb-edit-name{width:27px;height:30px;display:grid;place-items:center;border-radius:7px;color:var(--wb-muted);cursor:pointer}
+#winterbell-ui .wb-edit-name:hover{background:var(--wb-hover);color:var(--wb-blue)}
+#winterbell-ui .wb-name-input{width:100%;min-width:0;border:1px solid var(--wb-blue);border-radius:5px;background:var(--wb-bg);color:var(--wb-text);padding:3px 5px;font-size:13px;font-weight:600}
+#winterbell-ui .wb-folder-select{font-size:10px;border:0;padding:2px 4px;max-width:95px;cursor:pointer;color:var(--wb-tag-text);background:var(--wb-tag)}
+#winterbell-ui .wb-folder-select.work{background:var(--wb-soft);color:var(--wb-blue)}
+#winterbell-ui .wb-folder-select option{background:var(--wb-panel);color:var(--wb-text)}
+#winterbell-ui .wb-code.is-expiring{color:#c83d43}
+#winterbell-ui[data-theme=dark] .wb-code.is-expiring{color:#ff8c92}
+#winterbell-ui .wb-service-text h3{overflow-wrap:anywhere}
+
+#winterbell-ui .wb-reorder{width:23px;height:30px;display:grid;place-items:center;border-radius:7px;color:var(--wb-muted);cursor:grab;flex-shrink:0;touch-action:none}
+#winterbell-ui .wb-service-mark,#winterbell-ui .wb-service-text{cursor:grab;touch-action:none}
+#winterbell-ui .wb-drag-preview{position:fixed;z-index:100;pointer-events:none;padding:10px 16px;border:1px solid var(--wb-blue);border-radius:10px;background:var(--wb-panel);color:var(--wb-blue);font-size:13px;font-weight:600;box-shadow:0 8px 24px #0002;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#winterbell-ui .wb-reorder:hover,#winterbell-ui .wb-reorder:focus-visible{color:var(--wb-blue);background:var(--wb-hover)}
+#winterbell-ui .wb-reorder:active{cursor:grabbing}
+#winterbell-ui .wb-account.is-dragging{opacity:.45}
+#winterbell-ui .wb-account.is-drop-before{box-shadow:-4px 0 0 var(--wb-blue);border-color:var(--wb-blue)}
+#winterbell-ui .wb-account.is-drop-after{box-shadow:4px 0 0 var(--wb-blue);border-color:var(--wb-blue)}
+#winterbell-ui .wb-reorder-vertical .wb-account.is-drop-before{box-shadow:0 -4px 0 var(--wb-blue)}
+#winterbell-ui .wb-reorder-vertical .wb-account.is-drop-after{box-shadow:0 4px 0 var(--wb-blue)}
+
+#winterbell-ui .wb-unlock-fields>.wb-secondary{width:100%;margin-top:14px;justify-content:center}#winterbell-ui .wb-first-steps{display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid var(--wb-line);border-radius:12px;background:var(--wb-panel);font-size:12px;color:var(--wb-muted)}#winterbell-ui .wb-google-welcome,#winterbell-ui .wb-start-options{max-width:380px}#winterbell-ui .wb-lock:has(#wb-first-sync-password){padding-top:25px}#winterbell-ui .wb-lock:has(#wb-first-sync-password) .wb-unlock-fields label{margin-top:10px}#winterbell-ui .wb-unlock-fields select{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid var(--wb-line);border-radius:10px;color:var(--wb-text);background:var(--wb-panel)}#winterbell-ui .wb-start-choice{display:flex;align-items:center;gap:12px;width:100%;padding:16px;margin-top:12px;border:1px solid var(--wb-line);border-radius:12px;color:var(--wb-text);background:var(--wb-panel);text-align:left}#winterbell-ui .wb-start-choice:hover{border-color:var(--wb-blue);background:var(--wb-bg)}#winterbell-ui .wb-start-choice strong,#winterbell-ui .wb-start-choice small{display:block}#winterbell-ui .wb-start-choice strong{font-size:13px}#winterbell-ui .wb-start-choice small{font-size:11px;color:var(--wb-muted);line-height:1.5;margin-top:5px}
+
+#winterbell-ui .wb-delete{width:27px;height:30px;display:grid;place-items:center;border-radius:7px;color:var(--wb-muted);cursor:pointer;flex-shrink:0}
+#winterbell-ui .wb-delete:hover,#winterbell-ui .wb-delete:focus-visible{color:#c83d43;background:#c83d4315}
+#winterbell-ui[data-theme=dark] .wb-delete:hover,#winterbell-ui[data-theme=dark] .wb-delete:focus-visible{color:#ff8c92;background:#ff8c9215}
+#winterbell-ui .wb-delete-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px}
+#winterbell-ui .wb-danger{background:#b52c35;color:#fff;min-width:130px}
+#winterbell-ui .wb-danger:hover{background:#98232b}
+#winterbell-ui .wb-danger:disabled{background:#b52c35;opacity:.55;cursor:not-allowed}
+
+#winterbell-ui .wb-startup-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:96px;min-height:40px;padding:8px 12px;border:1px solid var(--wb-line);border-radius:10px;background:var(--wb-bg);color:var(--wb-text);font-size:12px;flex-shrink:0}
+#winterbell-ui .wb-startup-toggle:disabled{opacity:.55;cursor:not-allowed}
+
+#winterbell-ui .wb-about-row{align-items:flex-start}
+#winterbell-ui .wb-about-copy{flex:1 1 360px;min-width:0;max-width:68ch}
+#winterbell-ui .wb-about-copy p{font-size:12px;line-height:1.7}
+#winterbell-ui .wb-about-copy .wb-about-description{margin-top:8px}
+#winterbell-ui .wb-about-copy .wb-about-credit{margin-top:12px}
+#winterbell-ui .wb-about-credit strong{font-size:inherit;color:var(--wb-text)}
+#winterbell-ui .wb-about-copy .wb-about-version{margin-top:10px;font-size:11px}
+
+#winterbell-ui .wb-window-controls{position:absolute;top:0;right:0;height:44px;display:flex;app-region:no-drag;-webkit-app-region:no-drag}
+#winterbell-ui .wb-window-button{display:grid;place-items:center;width:46px;height:44px;padding:0;border:0;border-radius:0;background:transparent;color:var(--wb-text);cursor:pointer;app-region:no-drag;-webkit-app-region:no-drag;transition:background-color 120ms ease-out,color 120ms ease-out}
+#winterbell-ui .wb-window-button:hover,#winterbell-ui .wb-window-button:focus-visible{background:#d4edf9;color:#126b91}
+#winterbell-ui[data-theme=dark] .wb-window-button:hover,#winterbell-ui[data-theme=dark] .wb-window-button:focus-visible{background:#294d63;color:#8ad9f8}
+#winterbell-ui .wb-window-button:active{background:#b9ddeb}
+#winterbell-ui[data-theme=dark] .wb-window-button:active{background:#37667e}
+#winterbell-ui .wb-window-close:hover,#winterbell-ui .wb-window-close:focus-visible,#winterbell-ui[data-theme=dark] .wb-window-close:hover,#winterbell-ui[data-theme=dark] .wb-window-close:focus-visible{background:#c42b32;color:#fff}
+#winterbell-ui .wb-window-close:active,#winterbell-ui[data-theme=dark] .wb-window-close:active{background:#a82329;color:#fff}
+#winterbell-ui .wb-window-button:focus-visible{outline:2px solid currentColor;outline-offset:-4px}
+#winterbell-ui .wb-window-button svg[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){#winterbell-ui .wb-window-button{transition:none}}
+
+/* Original Glacia snowflake-shield brand, tinted by the current theme. */
+#winterbell-ui .wb-brand-mark{display:inline-block;flex-shrink:0;width:22px;height:22px;background:var(--wb-blue);mask:url("assets/glacia-mark.svg") center/contain no-repeat;-webkit-mask:url("assets/glacia-mark.svg") center/contain no-repeat}
+#winterbell-ui .wb-logo .wb-brand-mark{width:31px;height:31px;transform:rotate(5deg)}
+#winterbell-ui .wb-lock .wb-logo .wb-brand-mark{width:42px;height:42px;transform:none}
+
+#winterbell-ui .wb-privacy-notice{margin-top:22px;padding-top:16px;border-top:1px solid var(--wb-line);max-width:65ch}
+#winterbell-ui .wb-privacy-notice p{font-size:12px;line-height:1.65;color:var(--wb-muted)}
+#winterbell-ui .wb-lock .wb-privacy-notice{max-width:420px;margin-left:auto;margin-right:auto}
+#winterbell-ui .wb-public-link{display:inline-flex;align-items:center;gap:6px;padding:7px 2px;margin-top:4px;font-size:12px;color:var(--wb-blue);border-radius:5px;cursor:pointer}
+#winterbell-ui .wb-public-link:hover{text-decoration:underline}
+#winterbell-ui .wb-public-link:focus-visible{outline:2px solid var(--wb-blue);outline-offset:3px}

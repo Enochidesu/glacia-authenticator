@@ -1,0 +1,69 @@
+#winterbell-ui .wb-sync-badge{display:inline-flex;align-items:center;gap:5px;min-height:25px;padding:2px 7px;border-radius:6px;background:var(--wb-soft);color:var(--wb-blue);font-size:10px;white-space:nowrap;app-region:no-drag;-webkit-app-region:no-drag}
+#winterbell-ui .wb-sync-badge .wb-icon,#winterbell-ui .wb-sync-badge .wb-icon svg{width:14px;height:14px}
+#winterbell-ui .wb-sync-badge:hover:not(:disabled){background:var(--wb-hover)}
+#winterbell-ui .wb-sync-badge[data-sync-state=synced]{color:var(--wb-green)}
+#winterbell-ui .wb-sync-badge[data-sync-state=error]{color:#b34245;background:#fce7e8}
+#winterbell-ui[data-theme=dark] .wb-sync-badge[data-sync-state=error]{color:#ffb8bd;background:#492c39}
+#winterbell-ui .wb-sync-badge[data-sync-state=paused],#winterbell-ui .wb-sync-badge[data-sync-state=offline]{color:var(--wb-muted)}
+#winterbell-ui .wb-sync-badge[data-sync-state=syncing] svg{animation:wb-cloud-spin 1.5s linear infinite}
+@keyframes wb-cloud-spin{to{transform:rotate(360deg)}}
+#winterbell-ui .wb-service-logo{display:block;width:26px;height:26px;background:var(--wb-blue);mask-image:var(--wb-logo);mask-repeat:no-repeat;mask-position:center;mask-size:contain}
+#winterbell-ui [data-folder-color=blue]{--wb-folder-color:#16749d;--wb-folder-soft:#d8effb}
+#winterbell-ui [data-folder-color=purple]{--wb-folder-color:#665688;--wb-folder-soft:#edeafa}
+#winterbell-ui [data-folder-color=green]{--wb-folder-color:#287d6b;--wb-folder-soft:#e2f4ed}
+#winterbell-ui [data-folder-color=amber]{--wb-folder-color:#926422;--wb-folder-soft:#fbf0db}
+#winterbell-ui [data-folder-color=rose]{--wb-folder-color:#a64b6b;--wb-folder-soft:#fbe9ef}
+#winterbell-ui [data-folder-color=slate]{--wb-folder-color:#5b7080;--wb-folder-soft:#e9eff3}
+#winterbell-ui[data-theme=dark] [data-folder-color=blue]{--wb-folder-color:#8cd6f5;--wb-folder-soft:#23495f}
+#winterbell-ui[data-theme=dark] [data-folder-color=purple]{--wb-folder-color:#d0c4f1;--wb-folder-soft:#38324f}
+#winterbell-ui[data-theme=dark] [data-folder-color=green]{--wb-folder-color:#87d6be;--wb-folder-soft:#224b43}
+#winterbell-ui[data-theme=dark] [data-folder-color=amber]{--wb-folder-color:#ecd296;--wb-folder-soft:#4a402d}
+#winterbell-ui[data-theme=dark] [data-folder-color=rose]{--wb-folder-color:#f2afc9;--wb-folder-soft:#4b3045}
+#winterbell-ui[data-theme=dark] [data-folder-color=slate]{--wb-folder-color:#bfced9;--wb-folder-soft:#304452}
+#winterbell-ui .wb-folder-dot[data-folder-color]{background:var(--wb-folder-color);flex-shrink:0}
+#winterbell-ui .wb-folder-tag[data-folder-color]{background:var(--wb-folder-soft);color:var(--wb-folder-color)}
+#winterbell-ui .wb-folder-nav .wb-nav-button>span[data-i18n-skip]{min-width:0;overflow-wrap:anywhere}
+#winterbell-ui .wb-manage-folders{font-size:11px;min-height:35px;padding-top:7px;padding-bottom:7px}
+#winterbell-ui .wb-folder-list{display:flex;flex-direction:column;gap:8px;margin:16px 0 22px}
+#winterbell-ui .wb-folder-row{display:flex;align-items:center;gap:9px;padding:8px 5px;border-bottom:1px solid var(--wb-line);overflow-wrap:anywhere}
+#winterbell-ui .wb-folder-row>span[data-i18n-skip]{min-width:0}
+#winterbell-ui .wb-folder-row-actions{display:flex;align-items:center;gap:5px;margin-left:auto;flex-shrink:0}
+#winterbell-ui .wb-folder-builtin{font-size:11px;color:var(--wb-muted)}
+#winterbell-ui .wb-folder-remove:hover{background:#fce7e8;color:#b34245}
+#winterbell-ui[data-theme=dark] .wb-folder-remove:hover{background:#492c39;color:#ffb8bd}
+#winterbell-ui .wb-folder-preview{display:flex;gap:8px;align-items:center;padding:16px 0;color:var(--wb-muted)}
+#winterbell-ui .wb-backup-status{margin-bottom:22px}
+#winterbell-ui .wb-backup-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#winterbell-ui .wb-backup-heading>div{display:flex;align-items:center;gap:10px}
+#winterbell-ui .wb-backup-heading h2{margin:0}
+#winterbell-ui .wb-backup-details{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:22px 0 0;font-size:12px}
+#winterbell-ui .wb-backup-details p{margin-top:5px;color:var(--wb-muted)}
+#winterbell-ui .wb-backup-status .wb-setting-row{padding-bottom:0}
+#winterbell-ui .wb-backup-reminder{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--wb-soft);padding:12px 15px;border-radius:12px;margin-bottom:18px;font-size:12px}
+#winterbell-ui .wb-backup-reminder>span:nth-child(2){flex:1;min-width:100px}
+#winterbell-ui .wb-help-page>h2{margin-bottom:24px}
+#winterbell-ui .wb-help-page details{border-top:1px solid var(--wb-line);padding:17px 0}
+#winterbell-ui .wb-help-page summary{font-size:14px;font-weight:600;color:var(--wb-text)}
+#winterbell-ui .wb-help-page p,#winterbell-ui .wb-help-page li,#winterbell-ui .wb-help-page dd{font-size:12px;color:var(--wb-muted);line-height:1.7}
+#winterbell-ui .wb-help-page p{margin:12px 0}
+#winterbell-ui .wb-help-page ol{padding-left:22px;margin:12px 0}
+#winterbell-ui .wb-help-page li{margin:8px 0}
+#winterbell-ui .wb-help-page dt{font-size:12px;font-weight:600;margin-top:14px}
+#winterbell-ui .wb-help-page dd{margin:5px 0 12px}
+@media(prefers-reduced-motion:reduce){#winterbell-ui .wb-sync-badge[data-sync-state=syncing] svg{animation:none}}
+@media(min-width:701px){
+ html,body{height:100%;overflow:hidden}
+ #winterbell-ui{height:100vh;min-height:0}
+ #winterbell-ui .wb-shell{height:calc(100vh - 44px);min-height:0}
+ #winterbell-ui .wb-sidebar,#winterbell-ui .wb-main{min-height:0}
+ #winterbell-ui .wb-main{overflow:auto}
+ #winterbell-ui .wb-brand,#winterbell-ui .wb-sidebar-bottom{flex-shrink:0}
+ #winterbell-ui .wb-sidebar-scroll{min-height:0;overflow:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--wb-line) transparent;padding-right:2px}
+ #winterbell-ui .wb-sidebar-scroll .wb-nav{gap:3px}
+ #winterbell-ui .wb-sidebar-scroll .wb-nav-button{min-height:36px;padding:8px 10px;font-size:13px}
+ #winterbell-ui .wb-sidebar-scroll .wb-manage-folders{font-size:11px}
+ #winterbell-ui .wb-sidebar-scroll .wb-section-label{padding-top:6px;padding-bottom:6px}
+ #winterbell-ui .wb-sidebar-scroll .wb-divider{margin-top:12px;margin-bottom:10px}
+ #winterbell-ui .wb-sidebar-bottom{padding-top:18px}
+}
+@media(max-width:700px){#winterbell-ui .wb-folder-nav{display:flex;flex-wrap:wrap;margin-top:10px}#winterbell-ui .wb-folder-nav .wb-nav-button{max-width:100%}}

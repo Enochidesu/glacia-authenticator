@@ -1,0 +1,24 @@
+{
+  "project": "Simple Icons",
+  "version": "16.0.0",
+  "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/16.0.0",
+  "icons": [
+    "discord",
+    "ea",
+    "sega",
+    "paypal",
+    "steam",
+    "google",
+    "github",
+    "apple",
+    "facebook",
+    "instagram",
+    "twitch",
+    "reddit",
+    "epicgames",
+    "riotgames",
+    "telegram",
+    "playstation",
+    "dropbox"
+  ]
+}

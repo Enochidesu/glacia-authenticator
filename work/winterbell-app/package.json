@@ -1,0 +1,27 @@
+{
+  "name": "glacia-authenticator",
+  "productName": "Glacia Authenticator",
+  "version": "0.4.3",
+  "description": "A Windows TOTP authenticator with encrypted local storage, portable exports and optional encrypted Google Drive sync.",
+  "main": "main.cjs",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/core.test.cjs tests/google-sync.test.cjs tests/remembered-vault.test.cjs tests/account-edit.test.cjs tests/migration.test.cjs tests/startup.test.cjs tests/release-config.test.cjs tests/i18n.test.cjs tests/features.test.cjs tests/public-pages.test.cjs"
+  },
+  "dependencies": {
+    "jsqr": "1.4.0",
+    "lucide": "0.468.0",
+    "qrcode": "1.5.4"
+  },
+  "devDependencies": {
+    "electron": "44.5.1",
+    "pngjs": "5.0.0"
+  },
+  "author": {
+    "name": "Enochi Sasaina",
+    "email": "enochi3317@gmail.com",
+    "url": "https://enochidesu.github.io/glacia-authenticator/"
+  },
+  "license": "Apache-2.0"
+}
