@@ -2,7 +2,7 @@
 
 ## 0.5.0
 
-Published as a Windows x64 testing [pre-release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.5.0) on October 2, 2026.
+Published as a regular Windows x64 [release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.5.0) on October 2, 2026.
 
 - Check for updates manually in Settings or once per fresh app launch. Stable releases are the default; pre-release updates are optional.
 - Approve downloads, follow progress, cancel a download, or postpone an available update for 24 hours. Restart & update installs silently in the existing installation folder.

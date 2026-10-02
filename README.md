@@ -4,7 +4,7 @@ Glacia Authenticator is an app from Winter Garden Project for your two-step veri
 
 Features include account ordering and folders, encrypted backup and restore, QR imports, a system-tray panel, light and dark themes, and English, Bahasa Indonesia, and Japanese language options.
 
-Download the Windows testing [0.5.0 pre-release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.5.0). Google sign-in availability remains subject to the project's Google verification status.
+Download the Windows [0.5.0 release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.5.0). Google sign-in availability remains subject to the project's Google verification status.
 
 The current installer is unsigned, so Windows may display publisher or SmartScreen warnings. Existing 0.4.3 users must install 0.5.0 manually once. Version 0.5.0 adds update checks with approved downloads and silent installation in the existing folder, one password for the vault and Google sync, password changes in Settings, quiet startup in the tray, and a configurable close button. See [CHANGELOG.md](CHANGELOG.md).
 
