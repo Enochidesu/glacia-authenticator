@@ -4,9 +4,9 @@ Glacia Authenticator is an app from Winter Garden Project for your two-step veri
 
 Features include account ordering and folders, encrypted backup and restore, QR imports, a system-tray panel, light and dark themes, and English, Bahasa Indonesia, and Japanese language options.
 
-Download the Windows testing [pre-release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.4.3). Google branding verification is still pending.
+Download the Windows testing [0.5.0 pre-release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.5.0). Google sign-in availability remains subject to the project's Google verification status.
 
-The current installer is unsigned, so Windows may display publisher or SmartScreen warnings. The published 0.4.3 release requires manual updates. The 0.5.0 source adds update checks with approved downloads and silent installation in the existing folder, one password for the vault and Google sync, password changes in Settings, quiet startup in the tray, and a configurable close button. Its installer has not yet been published; see [CHANGELOG.md](CHANGELOG.md).
+The current installer is unsigned, so Windows may display publisher or SmartScreen warnings. Existing 0.4.3 users must install 0.5.0 manually once. Version 0.5.0 adds update checks with approved downloads and silent installation in the existing folder, one password for the vault and Google sync, password changes in Settings, quiet startup in the tray, and a configurable close button. See [CHANGELOG.md](CHANGELOG.md).
 
 Older vaults can upgrade to one Glacia password without losing accounts. New passwords require at least 6 characters. A linked cloud vault needs the original Google account connected to change its password. Exported backups keep the password used when they were created.
 
