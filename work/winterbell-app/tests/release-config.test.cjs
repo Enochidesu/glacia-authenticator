@@ -14,12 +14,13 @@ test('public packaging includes only app registration and omits the developer gu
  fs.copyFileSync(path.resolve(actual,'../installer-terms.txt'),path.join(root,'work','installer-terms.txt'));
  for(const name of fs.readdirSync(actual)){if(fs.statSync(path.join(actual,name)).isFile())fs.copyFileSync(path.join(actual,name),path.join(source,name));}
  fs.mkdirSync(path.join(source,'vendor'));fs.cpSync(path.join(actual,'assets'),path.join(source,'assets'),{recursive:true});const runtime=path.join(source,'node_modules','electron','dist');fs.mkdirSync(runtime,{recursive:true});fs.writeFileSync(path.join(runtime,'electron.exe'),'synthetic runtime fixture');
- for(const name of ['qrcode','jsqr','lucide']){const dir=path.join(source,'node_modules',name);fs.mkdirSync(dir,{recursive:true});fs.writeFileSync(path.join(dir,'package.json'),JSON.stringify({name,version:'test'}));}
+ for(const name of ['qrcode','jsqr','lucide','electron-updater','semver']){const dir=path.join(source,'node_modules',name);fs.mkdirSync(dir,{recursive:true});fs.writeFileSync(path.join(dir,'package.json'),JSON.stringify({name,version:'test'}));}
  const clientFile=path.join(root,'release client.json');fs.writeFileSync(clientFile,JSON.stringify({...fixture,tokens:{access_token:'never-package-account-tokens'}}));
  execFileSync(process.execPath,[buildFile,'--public','--google-client',clientFile],{cwd:root,stdio:'pipe'});
- const output=path.join(root,'outputs','Glacia Authenticator Public v0.4.3'),target=path.join(output,'resources','app');
+ const output=path.join(root,'outputs','Glacia Authenticator Public v0.5.0'),target=path.join(output,'resources','app');
  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(target,'google-client.json'),'utf8')),fixture);assert.equal(loadReleaseConfig(target).publicRelease,true);assert.equal(fs.existsSync(path.join(output,'GOOGLE SYNC SETUP.md')),false);
- for(const file of ['folders.cjs','features.js','features-ui.js','features.css','assets/service-logos/sega.svg'])assert.equal(fs.existsSync(path.join(target,file)),true,file);
+ for(const file of ['updates.cjs','updates-ui.js','close-ui.js','passwords.cjs','folders.cjs','features.js','features-ui.js','features.css','assets/service-logos/sega.svg'])assert.equal(fs.existsSync(path.join(target,file)),true,file);
+ const feed=fs.readFileSync(path.join(output,'resources/app-update.yml'),'utf8');assert(feed.includes('owner: Enochidesu'));assert(feed.includes('repo: glacia-authenticator'));assert(!feed.includes('token'));
  assert.equal(JSON.parse(fs.readFileSync(path.join(target,'package.json'),'utf8')).license,'Apache-2.0');
  for(const name of ['LICENSE','NOTICE','TERMS OF USE.txt']){
   const source=name==='TERMS OF USE.txt'?path.join(root,'work','installer-terms.txt'):path.join(root,name);

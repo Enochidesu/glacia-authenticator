@@ -13,7 +13,7 @@ const listed=[...new Map([...historyObjects,...stagedObjects].map(o=>[o.sha,o]))
 const types=git(['cat-file','--batch-check=%(objectname) %(objecttype)'],{input:listed.map(o=>o.sha).join('\n')+'\n',encoding:'utf8'}).trim().split(/\r?\n/);
 const blobs=listed.filter((o,index)=>types[index].endsWith(' blob'));
 const findings=[];
-const privatePath=/(^|\/)(?:\.env(?:\..*)?|client_secret[^/]*\.json|[^/]*OAuth[^/]*\.json|google-client\.json|google-sync\.secure[^/]*|remembered-login\.secure[^/]*|vault\.winterbell[^/]*|credentials\.json)$/i;
+const privatePath=/(^|\/)(?:\.env(?:\..*)?|client_secret[^/]*\.json|[^/]*OAuth[^/]*\.json|google-client\.json|google-sync\.secure[^/]*|remembered-login\.secure[^/]*|update-session\.secure[^/]*|password-change\.pending[^/]*|[^/]*\.password-tmp|vault\.winterbell[^/]*|credentials\.json)$/i;
 const signatures=[
  ['Google client secret',/GOCSPX-[A-Za-z0-9_-]{20,}/],
  ['Google API key',/AIza[A-Za-z0-9_-]{30,}/],

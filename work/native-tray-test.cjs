@@ -1,6 +1,6 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict');
-const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),resultFile=path.join(__dirname,'native-tray-result.json');
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app'),resultFile=path.join(__dirname,'native-tray-result.json');
 process.env.WINTERBELL_DATA_DIR=path.join(__dirname,'tray-native-'+Date.now());
 const handlers=new Map(),errors=[];let main,mini,tray,menu,finished=false,exitRequested=false;
 function finish(ok,error){if(finished)return;finished=true;fs.writeFileSync(resultFile,JSON.stringify({ok,error,rendererErrors:errors,syntheticProfile:true,trayMenu:true,oneKeyPanel:true,upwardPicker:true,lockedPanel:true,fullExit:exitRequested}));if(!exitRequested||!ok)electron.app.exit(ok?0:1);}
@@ -18,7 +18,7 @@ function assertNear(actual,expected){assert.ok(Math.abs(actual-expected)<=1,`Exp
 function assertCorner(workArea){const bounds=mini.getBounds();assertNear(bounds.x+bounds.width,workArea.x+workArea.width-8);assertNear(bounds.y+bounds.height,workArea.y+workArea.height-8);}
 const call=async(window,name,arg)=>{const result=await handlers.get('winterbell:'+name)({sender:window.webContents,senderFrame:window.webContents.mainFrame},arg);if(!result.ok)throw Error(result.error);return result.data;};
 async function test(){try{
- await wait(()=>main&&tray&&menu);await call(main,'unlock',{password:'123456',remember:false});
+ await wait(()=>main&&tray&&menu);await call(main,'unlock',{password:'Synthetic native vault password',remember:false});
  await call(main,'add',{name:'First demo',email:'one@example.invalid',secret:'JBSWY3DPEHPK3PXP'});
  const data=await call(main,'add',{name:'Second demo',email:'two@example.invalid',secret:'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'}),second=data.accounts[1];
  assert.deepEqual(menu.items.map(item=>item.type==='separator'?'separator':item.label),['Open Glacia','Settings','separator','Exit']);
@@ -33,10 +33,10 @@ async function test(){try{
  await js("document.querySelectorAll('.mini-account')[1].click()");await wait(()=>js("document.querySelector('#mini-name').textContent==='Second demo'&&document.querySelector('#mini-menu').hidden"));
  assertNear(mini.getBounds().height,230);assertCorner(workArea);assert.equal((await call(main,'status')).preferences.trayAccountId,second.id);
  assert.equal(await js("document.querySelector('#mini-email').textContent"),'two@example.invalid');
- assert.equal((await handlers.get('winterbell:unlock')({sender:mini.webContents,senderFrame:mini.webContents.mainFrame},{password:'123456'})).ok,false);
+ assert.equal((await handlers.get('winterbell:unlock')({sender:mini.webContents,senderFrame:mini.webContents.mainFrame},{password:'Synthetic native vault password'})).ok,false);
  await call(main,'lock');await wait(()=>js("document.querySelector('#mini-code').textContent===''&&document.querySelector('#mini-key').hidden"));
  await js("document.querySelector('#mini-open').click()");await wait(()=>main.shown&&!mini.shown);assert.equal(main.skipped,false);
- await call(main,'unlock',{password:'123456',remember:false});
+ await call(main,'unlock',{password:'Synthetic native vault password',remember:false});
  menu.items[1].click();await wait(()=>main.webContents.executeJavaScript("document.querySelector('[data-page=settings]').getAttribute('aria-current')==='page'"));
  tray.emit('click',{},tray.getBounds());await wait(()=>mini.shown);await js("document.querySelector('#mini-hide').click()");await wait(()=>!mini.shown);
  assert.equal(errors.length,0);

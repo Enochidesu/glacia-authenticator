@@ -1,6 +1,6 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),fsp=fs.promises,path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict'),crypto=require('node:crypto');
-const source=path.join(__dirname,'winterbell-app'),appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),core=require(path.join(source,'core.cjs')),{GoogleSync,signature}=require(path.join(source,'google-sync.cjs')),{migrationUri}=require(path.join(source,'tests/migration-fixture.cjs'));
+const source=path.join(__dirname,'winterbell-app'),appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app'),core=require(path.join(source,'core.cjs')),{GoogleSync,signature}=require(path.join(source,'google-sync.cjs')),{migrationUri}=require(path.join(source,'tests/migration-fixture.cjs'));
 const mode=process.argv[2]||'new',profile=path.join(__dirname,'onboard-native-'+mode+'-'+Date.now()),resultFile=path.join(__dirname,'native-onboarding-'+mode+'-result.json');process.env.WINTERBELL_DATA_DIR=profile;
 const files=new Map(),errors=[],handlers=new Map(),dialogs=[];let cloud,main,finished=false,signInCalls=0,fileDialogs=0;
 function finish(ok,error){if(finished)return;finished=true;fs.writeFileSync(resultFile,JSON.stringify({ok,error,mode,syntheticProfile:true,simulatedGoogle:true,rendererErrors:errors}));electron.app.exit(ok?0:1);}
@@ -22,7 +22,7 @@ async function test(){try{
  await new Promise(r=>setTimeout(r,120));await fsp.writeFile(path.join(__dirname,'glacia-setup-choices.png'),(await main.webContents.capturePage()).toPNG());
  await js("document.querySelector('[data-setup-mode="+mode+"]').click()");await wait(()=>js("!!document.querySelector('#wb-onboard-create')"));
  const syncPassword=mode==='cloud'?oldPassword:'New sync password 2026';
- await js("document.querySelector('#wb-vault-password').value='123456';document.querySelector('#wb-vault-confirm').value='123456';document.querySelector('#wb-first-sync-password').value="+JSON.stringify(syncPassword)+";document.querySelector('#wb-first-sync-confirm').value="+JSON.stringify(syncPassword)+";");
+ await js("document.querySelector('#wb-vault-password').value='abc123';document.querySelector('#wb-vault-confirm').value='abc123';if(document.querySelector('#wb-first-sync-password'))document.querySelector('#wb-first-sync-password').value="+JSON.stringify(syncPassword)+";");
  if(mode==='local'){const backup=path.join(profile,'local.winterbell');await fsp.writeFile(backup,await core.encryptBackup([core.normalize({name:'Local backup account',email:'local@example.invalid',secret:'JBSWY3DPEHPK3PXP'})],'Local backup password 2026'));dialogs.push(backup);}
  await js("document.querySelector('#wb-onboard-create').click()");await wait(async()=>!(await call('status')).locked);assert.equal((await call('status')).cloud.enabled,true);
  if(mode==='cloud'){await wait(()=>js("document.querySelector('.wb-service-text h3')?.textContent==='Previous cloud account'"));assert.equal((await call('status')).accounts.length,1);}
@@ -34,6 +34,6 @@ async function test(){try{
   for(let i=0;i<2;i++){const qrFile=path.join(profile,'qr-'+i+'.png');await QRCode.toFile(qrFile,migrationUri([i?second:first],{size:2,index:i,version:2}),{width:650,margin:4});dialogs.push(qrFile);await js("document.querySelector('[data-upload-qr]').click()");await wait(()=>js("document.querySelector('.wb-step-note')?.textContent.includes('"+(i+1)+" of 2 QR pages scanned')"));if(i===0){assert.equal(await js("document.querySelector('[data-commit-import]').disabled"),true);const result=await handlers.get('winterbell:commitImport')({sender:main.webContents,senderFrame:main.webContents.mainFrame},{ids:[]});assert.equal(result.ok,false);}}
   assert.equal(await js("document.querySelector('[data-commit-import]').disabled"),false);await js("document.querySelector('[data-commit-import]').click()");await wait(async()=>(await call('status')).accounts.length===2);assert.equal(files.get('previous').text,previousText);await call('cloudSync');assert.equal(files.get('previous').text,previousText);
  }
- const before=(await call('status')).accounts;await call('lock');await call('unlock',{password:'123456',remember:false});assert.deepEqual((await call('status')).accounts.map(a=>a.name),before.map(a=>a.name));assert.equal(errors.length,0);finish(true);
+ const before=(await call('status')).accounts;await call('lock');await call('unlock',{password:'abc123',remember:false});assert.deepEqual((await call('status')).accounts.map(a=>a.name),before.map(a=>a.name));assert.equal(errors.length,0);finish(true);
  }catch(error){finish(false,error.stack);}}
 setTimeout(()=>finish(false,'Native onboarding timed out'),35000).unref();require(path.join(appDir,'main.cjs'));test();

@@ -6,7 +6,9 @@ Features include account ordering and folders, encrypted backup and restore, QR 
 
 Download the Windows testing [pre-release](https://github.com/Enochidesu/glacia-authenticator/releases/tag/v0.4.3). Google branding verification is still pending.
 
-The current installer is unsigned, so Windows may display publisher or SmartScreen warnings. There is no automatic updater.
+The current installer is unsigned, so Windows may display publisher or SmartScreen warnings. The published 0.4.3 release requires manual updates. The 0.5.0 source adds update checks with approved downloads and silent installation in the existing folder, one password for the vault and Google sync, password changes in Settings, quiet startup in the tray, and a configurable close button. Its installer has not yet been published; see [CHANGELOG.md](CHANGELOG.md).
+
+Older vaults can upgrade to one Glacia password without losing accounts. New passwords require at least 6 characters. A linked cloud vault needs the original Google account connected to change its password. Exported backups keep the password used when they were created.
 
 ## Source and development
 

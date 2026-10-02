@@ -32,7 +32,17 @@ $checks = @(
     @{ Script='native-tray-test.cjs'; Mode=''; Result='native-tray-result.json' },
     @{ Script='native-onboarding-test.cjs'; Mode='new'; Result='native-onboarding-new-result.json' },
     @{ Script='native-onboarding-test.cjs'; Mode='local'; Result='native-onboarding-local-result.json' },
-    @{ Script='native-onboarding-test.cjs'; Mode='cloud'; Result='native-onboarding-cloud-result.json' }
+    @{ Script='native-onboarding-test.cjs'; Mode='cloud'; Result='native-onboarding-cloud-result.json' },
+    @{ Script='native-passwords.cjs'; Mode='legacy'; Result='../validation/native-passwords-legacy.json' },
+    @{ Script='native-passwords.cjs'; Mode='restart'; Result='../validation/native-passwords-restart.json' },
+    @{ Script='native-passwords.cjs'; Mode='update-prepare'; Result='../validation/native-passwords-update-prepare.json' },
+    @{ Script='native-passwords.cjs'; Mode='update-restart'; Result='../validation/native-passwords-update-restart.json' },
+    @{ Script='native-passwords.cjs'; Mode='startup --startup'; Result='../validation/native-passwords-startup.json' },
+    @{ Script='native-passwords.cjs'; Mode='second-device'; Result='../validation/native-passwords-second-device.json' },
+    @{ Script='native-passwords.cjs'; Mode='offline-password'; Result='../validation/native-passwords-offline-password.json' },
+    @{ Script='native-passwords.cjs'; Mode='exit'; Result='../validation/native-passwords-exit.json' },
+    @{ Script='native-passwords.cjs'; Mode='six-minimum'; Result='../validation/native-passwords-six-minimum.json' },
+    @{ Script='native-updates.cjs'; Mode=''; Result='../validation/native-updates.json' }
 )
 foreach ($check in $checks) {
     $scriptFile = Join-Path $PSScriptRoot $check.Script

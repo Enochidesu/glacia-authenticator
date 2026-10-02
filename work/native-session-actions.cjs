@@ -1,6 +1,6 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict'),crypto=require('node:crypto');
-const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),{GoogleSync,signature}=require(path.join(appDir,'google-sync.cjs'));
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app'),{GoogleSync,signature}=require(path.join(appDir,'google-sync.cjs'));
 const restart=process.argv[2]==='restart',resultFile=path.join(__dirname,restart?'native-session-restart-result.json':'native-session-actions-result.json');
 const profileName=restart?JSON.parse(fs.readFileSync(path.join(__dirname,'native-session-actions-result.json'),'utf8')).profileName:'session-native-'+Date.now()+'-'+process.pid;
 assert.match(profileName,/^session-native-\d+-\d+$/);process.env.WINTERBELL_DATA_DIR=path.join(__dirname,profileName);
@@ -26,7 +26,7 @@ const raw=async(name,arg,sender=main.webContents)=>handlers.get('winterbell:'+na
 const call=async(name,arg)=>{const result=await raw(name,arg);if(!result.ok)throw Error(result.error);return result.data;};
 const savedGoogle=()=>JSON.parse(electron.safeStorage.decryptString(fs.readFileSync(path.join(profile,'google-sync.secure'))));
 const vaultBytes=()=>fs.readFileSync(path.join(profile,'vault.winterbell'));
-const passwordUnlock=async remember=>{await wait(()=>js("!!document.querySelector('#wb-vault-password')"));await js("document.querySelector('#wb-vault-password').value='123456';document.querySelector('#wb-remember-login').checked="+remember+";document.querySelector('#wb-unlock-real').click()");await wait(async()=>!(await call('status')).locked);await wait(()=>js("document.querySelector('#wb-locked').hidden"));await pause(50);};
+const passwordUnlock=async remember=>{await wait(()=>js("!!document.querySelector('#wb-vault-password')"));await js("document.querySelector('#wb-vault-password').value='Synthetic native vault password';document.querySelector('#wb-remember-login').checked="+remember+";document.querySelector('#wb-unlock-real').click()");await wait(async()=>!(await call('status')).locked);await wait(()=>js("document.querySelector('#wb-locked').hidden"));await pause(50);};
 async function test(){try{
  await wait(()=>main&&!main.webContents.isLoading());await wait(()=>js("!!document.querySelector('#wb-locked h2')"));
  if(restart){
@@ -35,7 +35,7 @@ async function test(){try{
   await js("document.querySelector('[data-local-setup]').click()");await passwordUnlock(false);assert.equal((await call('status')).accounts.length,1);
   await js("document.querySelector('#wb-lock-short').click()");await wait(()=>js("!!document.querySelector('#wb-vault-password')"));assert.equal((await call('status')).locked,true);assert.equal(signInCalls,0);assert.equal(errors.length,0);finish(true);return;
  }
- await cloud.configure(JSON.stringify({installed:{client_id:'1234567890-synthetic.apps.googleusercontent.com',client_secret:'synthetic-secret'}}));await call('cloudSignIn');await call('unlock',{password:'123456',remember:true});await call('add',{name:'Session sample',email:'demo@example.invalid',secret:'JBSWY3DPEHPK3PXP'});
+ await cloud.configure(JSON.stringify({installed:{client_id:'1234567890-synthetic.apps.googleusercontent.com',client_secret:'synthetic-secret'}}));await call('cloudSignIn');await call('unlock',{password:'Synthetic native vault password',remember:true});await call('add',{name:'Session sample',email:'demo@example.invalid',secret:'JBSWY3DPEHPK3PXP'});
  await wait(()=>js("document.querySelectorAll('.wb-account').length===1"));const originalVault=vaultBytes(),googleBefore=fs.readFileSync(path.join(profile,'google-sync.secure'));
  assert.equal(await js("document.querySelector('#wb-lock-button').textContent.trim()"),'Sign Out');assert.equal(await js("document.querySelector('#wb-lock-short').getAttribute('aria-label')"),'Lock vault');
  await cloud.enable('Synthetic session sync password');await js("document.querySelector('#wb-lock-short').click()");await wait(()=>js("!!document.querySelector('#wb-vault-password')&&!document.querySelector('#wb-resume-login')"));

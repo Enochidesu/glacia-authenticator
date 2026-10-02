@@ -17,5 +17,5 @@ test('unavailable Windows storage cannot save a remembered login',async t=>{
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'glacia-unavailable-'));t.after(()=>fs.rm(dir,{recursive:true,force:true}));const saved=new RememberedVault(dir,{isEncryptionAvailable:()=>false});await assert.rejects(saved.save(crypto.randomBytes(32),crypto.randomBytes(16)),/Windows secure storage/);assert.equal(await saved.exists(),false);
 });
 test('local six-character minimum leaves the stronger backup minimum intact',async()=>{
- assert.throws(()=>core.passwordCheck('12345',6),/6 characters/);assert.doesNotThrow(()=>core.passwordCheck('123456',6));assert.throws(()=>core.passwordCheck('123456'),/12 characters/);await assert.rejects(core.encryptBackup([],'123456'),/12 characters/);
+ assert.throws(()=>core.passwordCheck('12345'),/6 characters/);assert.doesNotThrow(()=>core.passwordCheck('123456'));assert.throws(()=>core.passwordCheck('123456',12),/12 characters/);await assert.rejects(core.encryptBackup([],'123456'),/12 characters/);
 });

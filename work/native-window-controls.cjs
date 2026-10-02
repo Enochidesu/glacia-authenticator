@@ -1,6 +1,6 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict');
-const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app');
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app');
 const profile=path.join(__dirname,'controls-native-'+Date.now()),resultFile=path.join(__dirname,'native-window-controls-result.json');
 process.env.WINTERBELL_DATA_DIR=profile;fs.mkdirSync(profile,{recursive:true});
 const handlers=new Map(),errors=[],checks=[],actions=[];let main,closeRequested=false,finished=false;
@@ -33,7 +33,7 @@ async function test(){try{
  await click('minimize');await wait(()=>!main.isVisible());await handlers.get('winterbell:openMainWindow')({sender:main.webContents,senderFrame:main.webContents.mainFrame});await wait(()=>main.isVisible()&&!main.isMinimized());checks.push('minimize to tray and reopen');
  assert.equal((await raw({action:'invalid'})).ok,false);assert.equal((await raw({action:'maximize'},{sender:main.webContents,senderFrame:{}})).ok,false);
  const outsider=new electron.BrowserWindow({show:false});assert.equal((await raw({action:'close'},{sender:outsider.webContents,senderFrame:outsider.webContents.mainFrame})).ok,false);outsider.destroy();checks.push('invalid and untrusted actions rejected');
- assert.equal(errors.length,0);closeRequested=true;await click('close');
+ await handlers.get('winterbell:preferences')({sender:main.webContents,senderFrame:main.webContents.mainFrame},{closeBehavior:'exit'});assert.equal(errors.length,0);closeRequested=true;await click('close');
  }catch(error){if(main&&!main.isDestroyed()){const diagnosis=await js(`({width:innerWidth,height:innerHeight,active:document.activeElement?.tagName,buttons:[...document.querySelectorAll('[data-window-action]')].map(b=>({action:b.dataset.windowAction,hover:b.matches(':hover'),disabled:b.disabled,rect:b.getBoundingClientRect().toJSON()}))})`);fs.writeFileSync(path.join(profile,'diagnosis.json'),JSON.stringify(diagnosis,null,2));fs.writeFileSync(path.join(profile,'failure.png'),(await main.webContents.capturePage()).toPNG());}finish(false,error.stack);}}
 electron.app.on('browser-window-created',(_event,w)=>w.webContents.on('console-message',d=>{if(d.level==='error')errors.push(d.message);}));
 electron.app.on('will-quit',()=>{if(!closeRequested)return finish(false,'Unexpected quit');checks.push('close button quits the app');finish(true);});

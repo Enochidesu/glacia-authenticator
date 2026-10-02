@@ -1,6 +1,6 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict'),crypto=require('node:crypto');
-const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),{GoogleSync,signature}=require(path.join(appDir,'google-sync.cjs'));
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app'),{GoogleSync,signature}=require(path.join(appDir,'google-sync.cjs'));
 const publicRelease=process.argv[2]==='public',resultFile=path.join(__dirname,publicRelease?'native-google-public-result.json':'native-google-private-result.json');
 const profile=path.join(__dirname,'google-release-native-'+Date.now()+'-'+process.pid);process.env.WINTERBELL_DATA_DIR=profile;
 const defaultConfig={clientId:'1234567890-synthetic.apps.googleusercontent.com',clientSecret:'synthetic-only'};

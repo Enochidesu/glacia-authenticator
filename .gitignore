@@ -56,3 +56,10 @@ outputs/installer/
 outputs/Google-*.jpg
 outputs/Glacia-terms-*.jpg
 outputs/GitHub-*.jpg
+
+**/update-preferences.json
+**/update-preferences.json.tmp
+
+**/password-change.pending*
+**/update-session.secure*
+**/*.password-tmp

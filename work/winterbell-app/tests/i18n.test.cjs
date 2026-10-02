@@ -22,7 +22,7 @@ test('dynamic messages translate counts and error details while preserving accou
 });
 test('all reachable application validation errors have translations',()=>{
  const directory=path.resolve(__dirname,'..');
- for(const name of ['main.cjs','core.cjs','google-sync.cjs','remembered-vault.cjs','onboarding.cjs','migration.cjs','startup.cjs']){
+ for(const name of ['main.cjs','passwords.cjs','core.cjs','google-sync.cjs','remembered-vault.cjs','onboarding.cjs','migration.cjs','startup.cjs']){
   const source=fs.readFileSync(path.join(directory,name),'utf8');
   for(const match of source.matchAll(/(?:Error|fail)\('([^']+)'\)/g)){
    // Developer-only OAuth import validation has no renderer/IPC entry point.

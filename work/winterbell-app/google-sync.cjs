@@ -36,7 +36,7 @@ function syncTarget(raw){
  const validVault=raw.vaultId==='legacy'||(typeof raw.vaultId==='string'&&/^[a-f0-9-]{36}$/.test(raw.vaultId));
  return {sub:raw.sub,device:raw.device,...(validVault?{vaultId:raw.vaultId,vaultName:typeof raw.vaultName==='string'?raw.vaultName:'Original Glacia vault'}:{})};
 }
-const i18n=require('./i18n.js');
+const i18n=require('./i18n.js');const {sealCloudKey,openCloudKey}=require('./passwords.cjs');
 function syncUnlockContext(config,tokens){return tokens&&config?{sub:tokens.sub,vaultId:tokens.vaultId||'legacy',clientId:config.clientId,device:tokens.device,vaultName:tokens.vaultName||'Original Glacia vault'}:null;}
 function syncUnlockAAD(context){return Buffer.from(JSON.stringify(['Glacia:sync-unlock:1',context.sub,context.vaultId,context.clientId,context.device]));}
 function syncUnlockKey(vaultKey){if(!Buffer.isBuffer(vaultKey)||vaultKey.length!==32)throw Error('Unlock Glacia first.');return Buffer.from(crypto.hkdfSync('sha256',vaultKey,Buffer.alloc(0),'Glacia:sync-unlock:1',32));}
@@ -129,6 +129,23 @@ class GoogleSync {
   catch{this.error='Saved sync could not be unlocked. Enter your sync password again.';this.changed();return false;}finally{wrappingKey?.fill(0);password?.fill(0);}
  }
  async forgetSync(){const previous=this.savedSync;this.savedSync=null;try{await this.persist();}catch(error){this.savedSync=previous;this.changed();throw error;}this.changed();}
+
+ context(){if(!this.tokens)throw Error('Sign in with Google first.');return {sub:this.tokens.sub,vaultId:this.tokens.vaultId||'legacy'};}
+ async passwordEntry(){
+  const context=this.context(),headers={Authorization:'Bearer '+await this.accessToken()},url=new URL(DRIVE);url.searchParams.set('spaces','appDataFolder');url.searchParams.set('q',"trashed = false and appProperties has { key='winterbell' and value='password-v1' }");url.searchParams.set('fields','files(id,appProperties)');url.searchParams.set('pageSize','100');
+  const result=JSON.parse(await this.request(url.toString(),{headers}));const entries=(result.files||[]).filter(file=>file.appProperties?.winterbell==='password-v1'&&(file.appProperties.vaultId||'legacy')===context.vaultId);if(entries.length>1)throw Error('Conflicting cloud password records. Contact Glacia support.');if(!entries.length)return null;const file=entries[0];if(!/^[a-zA-Z0-9_-]+$/.test(file.id))throw Error('Invalid cloud password record.');
+  const response=await this.fetchImpl(DRIVE+'/'+encodeURIComponent(file.id)+'?alt=media',{headers,signal:AbortSignal.timeout(25000),redirect:'error'});if(!response.ok)throw Error('Could not read the cloud password record.');return {id:file.id,text:await bodyText(response),etag:response.headers.get('etag')};
+ }
+ async unifiedSecret(password,create=false){const entry=await this.passwordEntry();if(entry)return openCloudKey(entry.text,password,this.context());if(!create)throw Error('This cloud vault needs the one-password upgrade.');return Buffer.from(crypto.randomBytes(32).toString('base64url'));}
+ async passwordPlan(oldPassword,newPassword,secret){const entry=await this.passwordEntry(),context=this.context();if(entry){const opened=await openCloudKey(entry.text,oldPassword,context);try{if(!crypto.timingSafeEqual(crypto.createHash('sha256').update(opened).digest(),crypto.createHash('sha256').update(secret).digest()))throw Error('Cloud password changed on another computer. Unlock it again.');}finally{opened.fill(0);}}
+  return {context,previous:entry?.text||null,next:await sealCloudKey(secret,newPassword,context)};
+ }
+ async commitPasswordPlan(plan){const context=this.context();if(context.sub!==plan?.context?.sub||context.vaultId!==plan.context.vaultId)throw Error('Sign in to the original Google account to finish this password change.');const entry=await this.passwordEntry();if(entry?.text===plan.next)return;
+  if((entry?.text||null)!==plan.previous)throw Error('Cloud password changed on another computer. Unlock it again.');const headers={Authorization:'Bearer '+await this.accessToken(),'Content-Type':'application/json'};
+  if(entry){if(entry.etag)headers['If-Match']=entry.etag;await this.request(UPLOAD+'/'+encodeURIComponent(entry.id)+'?uploadType=media',{method:'PATCH',headers,body:plan.next});}
+  else{const boundary='glacia_password_'+crypto.randomBytes(16).toString('hex'),metadata={name:'Glacia-password-'+context.vaultId+'.json',parents:['appDataFolder'],appProperties:{winterbell:'password-v1',vaultId:context.vaultId}};const body='--'+boundary+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+JSON.stringify(metadata)+'\r\n--'+boundary+'\r\nContent-Type: application/json\r\n\r\n'+plan.next+'\r\n--'+boundary+'--\r\n';await this.request(UPLOAD+'?uploadType=multipart',{method:'POST',headers:{...headers,'Content-Type':'multipart/related; boundary='+boundary},body});}
+ }
+ sessionBytes(vaultKey,secret){const context=syncUnlockContext(this.config,this.tokens);if(!context)throw Error('Sign in with Google first.');const wrappingKey=syncUnlockKey(vaultKey);try{const iv=crypto.randomBytes(12),cipher=crypto.createCipheriv('aes-256-gcm',wrappingKey,iv);cipher.setAAD(syncUnlockAAD(context));const ciphertext=Buffer.concat([cipher.update(secret),cipher.final()]),syncUnlock={version:1,...context,iv:iv.toString('base64'),tag:cipher.getAuthTag().toString('base64'),ciphertext:ciphertext.toString('base64')};return this.safeStorage.encryptString(JSON.stringify({version:1,config:this.config,tokens:this.tokens,target:syncTarget(this.tokens),syncUnlock}));}finally{wrappingKey.fill(0);}}
  async accessToken(signal){
   if(!this.tokens)throw Error('Sign in with Google first.');
   if(Date.now()<this.tokens.expiresAt-60000)return this.tokens.accessToken;
@@ -139,7 +156,7 @@ class GoogleSync {
  async list(headers,signal,all=false){
   let files=[],page='';do{const url=new URL(DRIVE);url.searchParams.set('spaces','appDataFolder');url.searchParams.set('q',"trashed = false and appProperties has { key='winterbell' and value='vault-v1' }");url.searchParams.set('fields','nextPageToken,files(id,name,size,appProperties)');url.searchParams.set('pageSize','100');if(page)url.searchParams.set('pageToken',page);
    const data=JSON.parse(await this.request(url.toString(),{headers},signal));if(!Array.isArray(data.files))throw Error('Invalid Drive response.');files.push(...data.files);if(files.length>100)throw Error('Too many synced devices. Keep an encrypted backup and review your Google app data.');page=data.nextPageToken||'';
-  }while(page);return all?files:files.filter(file=>(file.appProperties?.vaultId||'legacy')===(this.tokens?.vaultId||'legacy'));
+  }while(page);files=files.filter(file=>file.appProperties?.winterbell!=='password-v1');return all?files:files.filter(file=>(file.appProperties?.vaultId||'legacy')===(this.tokens?.vaultId||'legacy'));
  }
  async discoverVaults(){if(!this.tokens)throw Error('Sign in with Google first.');const signal=AbortSignal.timeout(25000),headers={Authorization:'Bearer '+await this.accessToken(signal)},files=await this.list(headers,signal,true),groups=new Map();for(const file of files){const id=file.appProperties?.vaultId||'legacy';if(id!=='legacy'&&!/^[a-f0-9-]{36}$/.test(id))continue;if(!groups.has(id))groups.set(id,{id,name:file.appProperties?.vaultName||'Original Glacia vault'});}return [...groups.values()];}
  async selectVault(id){const groups=await this.discoverVaults(),group=groups.find(v=>v.id===id);if(!group)throw Error('That Glacia cloud backup is no longer available.');return this.setVault(group);}

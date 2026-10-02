@@ -1,6 +1,6 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict');
-const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),resultFile=path.join(__dirname,'native-account-order-result.json');
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app'),resultFile=path.join(__dirname,'native-account-order-result.json');
 process.env.WINTERBELL_DATA_DIR=path.join(__dirname,'order-native-'+Date.now());
 const handlers=new Map(),errors=[];let finished=false,main;
 function finish(ok,error){if(finished)return;finished=true;fs.writeFileSync(resultFile,JSON.stringify({ok,error,syntheticProfile:true,rendererErrors:errors,dragReorder:true,filteredOrder:true,keyboardOrder:true,persistedOrder:true}));electron.app.exit(ok?0:1);}
@@ -12,7 +12,7 @@ const js=code=>main.webContents.executeJavaScript(code),call=async(name,arg)=>{c
 const names=()=>js("[...document.querySelectorAll('.wb-service-text h3')].map(e=>e.textContent)");
 async function test(){try{
  await wait(()=>main&&!main.webContents.isLoading());await wait(()=>js("!!document.querySelector('#wb-locked')"));
- await call('unlock',{password:'123456',remember:false});
+ await call('unlock',{password:'Synthetic native vault password',remember:false});
  const labels=['Alpha','Bravo','Charlie','Delta','SEGA test','Foxtrot'];
  for(let i=0;i<labels.length;i++)await call('add',{name:labels[i],email:i+'@example.invalid',secret:'JBSWY3DPEHPK3PXP',folder:i%2?'work':'personal'});
  await wait(()=>js("document.querySelectorAll('.wb-account').length===6"));const original=(await call('status')).accounts,move=original[4].id;
@@ -44,7 +44,7 @@ async function test(){try{
  main.webContents.sendInputEvent({type:'mouseUp',button:'left',clickCount:1,...compact.end});await wait(async()=>(await call('status')).accounts[1].id===compactBefore[0]);
  const untrusted=new electron.BrowserWindow({show:false});const denied=await handlers.get('winterbell:reorderAccounts')({sender:untrusted.webContents,senderFrame:untrusted.webContents.mainFrame},{id:move,targetId:original[0].id});assert.equal(denied.ok,false);untrusted.destroy();
  const saved=(await call('status')).accounts.map(a=>a.id);await call('lock');const locked=await handlers.get('winterbell:reorderAccounts')({sender:main.webContents,senderFrame:main.webContents.mainFrame},{id:move,targetId:original[0].id});assert.equal(locked.ok,false);
- const reopened=await call('unlock',{password:'123456',remember:false});assert.deepEqual(reopened.accounts.map(a=>a.id),saved);assert.equal(errors.length,0);finish(true);
+ const reopened=await call('unlock',{password:'Synthetic native vault password',remember:false});assert.deepEqual(reopened.accounts.map(a=>a.id),saved);assert.equal(errors.length,0);finish(true);
  }catch(error){finish(false,error.stack);}}
 electron.app.on('browser-window-created',(_event,window)=>window.webContents.on('console-message',details=>{if(details.level==='error')errors.push(details.message);}));
 setTimeout(()=>finish(false,'Account order native test timed out'),30000).unref();require(path.join(appDir,'main.cjs'));test();

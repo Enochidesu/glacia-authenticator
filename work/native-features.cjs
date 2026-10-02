@@ -1,7 +1,7 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict');
 const mode=process.argv[2]||'start',packaged=process.argv.includes('packaged');
-const appDir=path.resolve(__dirname,packaged?'../outputs/Glacia Authenticator v0.4.3/resources/app':'winterbell-app');
+const appDir=path.resolve(__dirname,packaged?'../outputs/Glacia Authenticator v0.5.0/resources/app':'winterbell-app');
 const first=mode==='start',previous=first?null:JSON.parse(fs.readFileSync(path.join(__dirname,'native-features-start-result.json'),'utf8'));
 const profileName=first||mode==='restore'?'features-native-'+Date.now()+'-'+process.pid:previous.profileName;
 assert.match(profileName,/^features-native-\d+-\d+$/);const profile=path.join(__dirname,profileName);process.env.WINTERBELL_DATA_DIR=profile;

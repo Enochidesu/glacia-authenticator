@@ -1,7 +1,7 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const packaged=process.argv.includes('packaged'),mode=process.argv[2]||'start';
-const appDir=path.resolve(__dirname,packaged?'../outputs/Glacia Authenticator v0.4.3/resources/app':'winterbell-app');
+const appDir=path.resolve(__dirname,packaged?'../outputs/Glacia Authenticator v0.5.0/resources/app':'winterbell-app');
 const {GoogleSync,signature}=require(path.join(appDir,'google-sync.cjs')),core=require(path.join(appDir,'core.cjs'));
 const resultFile=path.join(__dirname,'native-sync-'+mode+'-result.json'),first=mode==='start';
 const profileName=first?'sync-native-'+Date.now()+'-'+process.pid:JSON.parse(fs.readFileSync(path.join(__dirname,'native-sync-start-result.json'),'utf8')).profileName;
@@ -37,7 +37,7 @@ async function raw(name,arg){return handlers.get('winterbell:'+name)({sender:mai
 async function call(name,arg){const result=await raw(name,arg);if(!result.ok)throw Error(result.error);return result.data;}
 const signIn=async()=>{await call('cloudSignIn');await cloud.authTask;assert.equal(cloud.status().connected,true,cloud.status().error);};
 const unlock=()=>call('unlock',{password:localPassword,remember:true});
-const enable=()=>call('cloudEnable',{password:syncPassword,confirm:syncPassword});
+const enable=()=>call('cloudEnable',{password:localPassword,legacyPassword:syncPassword});
 const stored=()=>JSON.parse(electron.safeStorage.decryptString(fs.readFileSync(path.join(profile,'google-sync.secure'))));
 async function uiSync(){await wait(()=>js("document.querySelector('#wb-locked').hidden"));await js("document.querySelector('[data-page=cloud]').click()");await wait(()=>js("!!document.querySelector('.wb-cloud-card h2')"));}
 async function test(){try{
@@ -67,7 +67,7 @@ async function test(){try{
  }else if(mode==='same-account'){
   assert.equal((await call('status')).locked,true);assert.equal((await call('status')).cloud.connected,false);await signIn();assert.equal((await call('status')).cloud.rememberedSync,true);assert.equal((await call('status')).cloud.enabled,false);await unlock();assert.equal((await call('status')).cloud.enabled,true);await wait(()=>!!cloud.lastSync);await call('signOut');checks.push('Same-account sign-in after an actual signed-out process restart resumes after the vault password');
  }else if(mode==='different-account'){
-  const before=fs.readFileSync(driveFile,'utf8');await signIn();await unlock();const data=await call('status');assert.equal(data.cloud.connected,true);assert.equal(data.cloud.rememberedSync,false);assert.equal(data.cloud.enabled,false);assert.equal(data.cloud.vaultId,'legacy');await pause(1700);assert.equal(listCalls,0);assert.equal(writes,0);assert.equal(fs.readFileSync(driveFile,'utf8'),before);await uiSync();assert.ok(await js("!!document.querySelector('[data-cloud-enable]')"));assert.ok(await js("document.querySelector('.wb-cloud-card').textContent.includes('Unlock sync once')"));checks.push('Different-account sign-in starts unconfigured and never inherits the previous accountâ€™s sync password, cloud namespace or uploads');
+  const before=fs.readFileSync(driveFile,'utf8');await signIn();await unlock();const data=await call('status');assert.equal(data.cloud.connected,true);assert.equal(data.cloud.rememberedSync,false);assert.equal(data.cloud.enabled,false);assert.equal(data.cloud.vaultId,'legacy');await pause(1700);assert.equal(listCalls,0);assert.equal(writes,0);assert.equal(fs.readFileSync(driveFile,'utf8'),before);await uiSync();assert.ok(await js("!!document.querySelector('[data-cloud-enable]')"));assert.ok(await js("document.querySelector('.wb-cloud-card').textContent.includes('Enter your Glacia password once')"));checks.push('Different-account sign-in starts unconfigured and never inherits the previous accountâ€™s sync password, cloud namespace or uploads');
  }else throw Error('Unknown test mode');
  const badgeLabel=mode==='offline'?'Needs attention':['pause','paused-restart','different-account'].includes(mode)?'Paused':['signout','same-account'].includes(mode)?'Local vault':'Synced';
  await wait(()=>js(`document.getElementById('wb-sync-label').textContent==='${badgeLabel}'`));checks.push('Titlebar sync indicator matches the active session state');

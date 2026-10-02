@@ -1,9 +1,9 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module');
-const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),resultPath=path.join(__dirname,'native-app-result.json');
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app'),resultPath=path.join(__dirname,'native-app-result.json');
 process.env.WINTERBELL_DATA_DIR=path.join(__dirname,'native-smoke-'+Date.now());
 const handlers=new Map(),errors=[];let finished=false,nativeOptions;
-function finish(ok,error){if(finished)return;finished=true;fs.writeFileSync(resultPath,JSON.stringify({ok,error,rendererErrors:errors,isolatedSyntheticProfile:true,packagedVersion:'0.4.3'}));electron.app.exit(ok?0:1);}
+function finish(ok,error){if(finished)return;finished=true;fs.writeFileSync(resultPath,JSON.stringify({ok,error,rendererErrors:errors,isolatedSyntheticProfile:true,packagedVersion:'0.5.0'}));electron.app.exit(ok?0:1);}
 process.on('uncaughtException',error=>finish(false,error.message));process.on('unhandledRejection',error=>finish(false,error.message));
 const load=Module._load;
 Module._load=function(name,parent,isMain){if(name==='electron')return {...electron,BrowserWindow:class extends electron.BrowserWindow{constructor(options){nativeOptions=options;super({...options,show:false});}},ipcMain:{handle:(name,fn)=>{handlers.set(name,fn);electron.ipcMain.handle(name,fn);}}};return load.apply(this,arguments);};
@@ -24,7 +24,7 @@ electron.app.on('browser-window-created',(_event,window)=>{
    await new Promise(resolve=>setTimeout(resolve,380));
    const settled=await window.webContents.executeJavaScript(`(()=>{const root=document.getElementById('winterbell-ui');return {color:getComputedStyle(root).backgroundColor,moon:getComputedStyle(document.querySelector('.wb-theme-moon')).opacity,sun:getComputedStyle(document.querySelector('.wb-theme-sun')).opacity};})()`);
    if(settled.color!=='rgb(16, 30, 44)'||settled.moon!=='1'||settled.sun!=='0')throw Error('Theme did not reach dark palette: '+JSON.stringify(settled));
-   const password='Native synthetic vault password';await call('unlock',{password});const added=await call('add',{name:'Synthetic native demo',email:'demo@example.invalid',secret:'JBSWY3DPEHPK3PXP'});if(added.accounts.length!==1||!/^[0-9]{6}$/.test(added.accounts[0].code))throw Error('Native account code failed');
+   const password='abc123';await call('unlock',{password});const added=await call('add',{name:'Synthetic native demo',email:'demo@example.invalid',secret:'JBSWY3DPEHPK3PXP'});if(added.accounts.length!==1||!/^[0-9]{6}$/.test(added.accounts[0].code))throw Error('Native account code failed');
    await call('lock');const reopened=await call('unlock',{password});if(reopened.accounts.length!==1)throw Error('Native vault reopen failed');await call('lock');
    if(errors.length)throw Error('Renderer console errors');finish(true);
   }catch(error){finish(false,error.message);}

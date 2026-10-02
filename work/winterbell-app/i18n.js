@@ -6,6 +6,42 @@ const languages=['en','id','ja'];
 const normalizeLanguage=value=>languages.includes(value)?value:'en';
 const catalog=Object.create(null);
 const messages=`
+Updates are not available yet. Try again later.|Pembaruan belum tersedia. Coba lagi nanti.|更新はまだ利用できません。後でもう一度お試しください。
+App updates|Pembaruan aplikasi|アプリの更新
+Check for updates|Periksa pembaruan|更新を確認
+Check when Glacia starts|Periksa saat Glacia dimulai|Glacia 起動時に確認
+Checks after a fresh launch, without downloading automatically.|Memeriksa saat aplikasi baru dibuka, tanpa mengunduh otomatis.|アプリの新しい起動時に確認します。自動ダウンロードは行いません。
+Include pre-release updates|Sertakan pembaruan prarilis|プレリリースの更新を含める
+Receive testing versions as well as stable releases.|Terima versi pengujian selain rilis stabil.|安定版に加えてテスト版も受け取ります。
+Checks GitHub for a newer version of Glacia.|Memeriksa versi Glacia yang lebih baru di GitHub.|GitHub で Glacia の新しいバージョンを確認します。
+Checking for updates…|Memeriksa pembaruan…|更新を確認中…
+You have the latest available version.|Anda menggunakan versi terbaru yang tersedia.|利用可能な最新バージョンです。
+A new update is available.|Pembaruan baru tersedia.|新しい更新があります。
+Downloading update…|Mengunduh pembaruan…|更新をダウンロード中…
+Your update is ready.|Pembaruan siap dipasang.|更新の準備ができました。
+Restarting Glacia to install the update…|Memulai ulang Glacia untuk memasang pembaruan…|更新をインストールするため Glacia を再起動中…
+Current version:|Versi saat ini:|現在のバージョン：
+New version:|Versi baru:|新しいバージョン：
+Glacia will download the update, then ask you to restart. Your vault and settings will be kept.|Glacia akan mengunduh pembaruan, lalu meminta Anda memulai ulang. Brankas dan pengaturan Anda tetap tersimpan.|Glacia は更新をダウンロードした後、再起動を確認します。保管庫と設定は保持されます。
+Update|Perbarui|更新
+Remind me later|Ingatkan nanti|後で通知
+Cancel download|Batalkan unduhan|ダウンロードを中止
+Download progress|Progres unduhan|ダウンロードの進行状況
+Restart & update|Mulai ulang & perbarui|再起動して更新
+Restart Glacia to finish installing the update.|Mulai ulang Glacia untuk menyelesaikan pemasangan pembaruan.|Glacia を再起動して更新のインストールを完了してください。
+Finishing current work before restarting.|Menyelesaikan pekerjaan saat ini sebelum memulai ulang.|再起動前に現在の処理を完了しています。
+Update could not be completed.|Pembaruan tidak dapat diselesaikan.|更新を完了できませんでした。
+Try again|Coba lagi|再試行
+Could not complete the update. Check your internet connection and try again.|Pembaruan tidak dapat diselesaikan. Periksa koneksi internet Anda dan coba lagi.|更新を完了できませんでした。インターネット接続を確認して再試行してください。
+Update checks are available in the packaged Windows app.|Pemeriksaan pembaruan tersedia di aplikasi Windows yang dikemas.|更新の確認は配布用 Windows アプリで利用できます。
+Install Glacia with its installer to enable automatic installation.|Pasang Glacia menggunakan installer agar pemasangan pembaruan otomatis tersedia.|自動インストールを有効にするには、インストーラーで Glacia をインストールしてください。
+Wait for the current update operation to finish.|Tunggu hingga proses pembaruan saat ini selesai.|現在の更新処理が完了するまでお待ちください。
+Invalid update preference.|Pengaturan pembaruan tidak valid.|更新の設定が無効です。
+Could not save update preferences.|Pengaturan pembaruan tidak dapat disimpan.|更新の設定を保存できませんでした。
+Invalid update action.|Tindakan pembaruan tidak valid.|更新の操作が無効です。
+Check for an update before downloading.|Periksa pembaruan sebelum mengunduh.|ダウンロード前に更新を確認してください。
+No cancellable update download is running.|Tidak ada unduhan pembaruan yang dapat dibatalkan.|中止できる更新ダウンロードは実行されていません。
+Download the update before installing.|Unduh pembaruan sebelum memasang.|インストール前に更新をダウンロードしてください。
 Privacy policy|Kebijakan privasi|プライバシーポリシー
 Google sign-in uses your email and Glacia’s private Drive app data for encrypted sync. Local-only use is optional.|Login Google menggunakan email Anda dan data aplikasi Drive khusus Glacia untuk sinkronisasi terenkripsi. Anda juga dapat menggunakan brankas lokal saja.|Google サインインでは、メールアドレスと Glacia 専用の Drive アプリデータを暗号化同期に使用します。ローカルのみでも利用できます。
 This information page is unavailable.|Halaman informasi ini tidak tersedia.|この情報ページは利用できません。
@@ -93,7 +129,7 @@ Off. Enable it when unlocking your vault.|Nonaktif. Aktifkan saat membuka kunci 
 Forget saved login|Hapus login tersimpan|保存したログイン情報を削除
 About Glacia|Tentang Glacia|Glacia について
 Glacia Authenticator is a Windows app for your two-step verification codes. It keeps your keys in an encrypted local vault, works offline, and supports optional encrypted Google sync across your computers.|Glacia Authenticator adalah aplikasi Windows untuk kode verifikasi dua langkah Anda. Kunci disimpan dalam brankas lokal terenkripsi, dapat digunakan secara offline, dan mendukung sinkronisasi Google terenkripsi antar-PC sebagai pilihan.|Glacia Authenticator は、2段階認証コードを管理する Windows アプリです。認証キーを暗号化されたローカル保管庫に保存し、オフラインでも使えます。必要に応じて、Google 経由で複数の PC 間を暗号化して同期できます。
-Windows desktop · version 0.4.3|Desktop Windows · versi 0.4.3|Windows デスクトップ · バージョン 0.4.3
+Windows desktop · version 0.5.0|Desktop Windows · versi 0.5.0|Windows デスクトップ · バージョン 0.5.0
 Your accounts are encrypted before uploading to Glacia’s private Google Drive app data. Keep the same sync password on every computer.|Akun dienkripsi sebelum diunggah ke data aplikasi pribadi Glacia di Google Drive. Gunakan kata sandi sinkronisasi yang sama di setiap PC.|アカウントは暗号化してから、Google Drive の Glacia 専用アプリデータ領域にアップロードされます。すべての PC で同じ同期パスワードを使ってください。
 Waiting for Google sign-in|Menunggu login Google|Google サインインを待っています
 Not connected|Belum terhubung|未接続
@@ -537,6 +573,65 @@ If a code is rejected, check that Windows date, time, and time zone are correct.
 Service logos help you recognize an account. Accounts without a supported logo show their initials.|Logo layanan membantu mengenali akun. Akun tanpa logo yang didukung akan menampilkan inisial.|サービスのロゴはアカウントを見分けるためのものです。対応するロゴがない場合は頭文字を表示します。
 Glacia Authenticator is app from Winter Garden Project for your two-step Verification Codes.|Glacia Authenticator adalah aplikasi dari Winter Garden Project untuk kode verifikasi dua langkah Anda.|Glacia Authenticator は Winter Garden Project による、2段階認証コードのためのアプリです。
 It keeps your keys in an encrypted local vault, works offline, and supports optional encrypted Google sync across your computers.|Aplikasi ini menyimpan kunci Anda dalam brankas lokal terenkripsi, berfungsi offline, dan mendukung sinkronisasi Google terenkripsi opsional antar komputer.|キーを暗号化されたローカル保管庫に保存し、オフラインでも動作します。複数の PC 間で暗号化した Google 同期を任意で利用できます。
+Finish the pending password change first.|Selesaikan perubahan kata sandi terlebih dahulu.|先に保留中のパスワード変更を完了してください。
+Finish the pending password change before unlocking.|Selesaikan perubahan kata sandi sebelum membuka brankas.|保管庫を開く前に保留中のパスワード変更を完了してください。
+Create your one Glacia password first.|Buat satu kata sandi Glacia terlebih dahulu.|先に Glacia の共通パスワードを作成してください。
+Sign in to the original Google account before changing this password.|Masuk ke akun Google semula sebelum mengubah kata sandi ini.|パスワードを変更する前に元の Google アカウントにログインしてください。
+The old password is incorrect.|Kata sandi lama salah.|現在のパスワードが正しくありません。
+The new passwords do not match.|Kata sandi baru tidak cocok.|新しいパスワードが一致しません。
+Close Glacia?|Tutup Glacia?|Glacia を閉じますか？
+Keep Glacia in the system tray or exit the app?|Simpan Glacia di baki sistem atau keluar dari aplikasi?|Glacia をトレイに格納しますか、それとも終了しますか？
+Minimize to tray|Minimalkan ke baki sistem|トレイに格納
+Exit app|Keluar dari aplikasi|アプリを終了
+Don't ask me again|Jangan tanyakan lagi|次回から確認しない
+Close button behavior|Perilaku tombol tutup|閉じるボタンの動作
+Choose what happens when you click X.|Pilih tindakan saat Anda mengeklik X.|X をクリックしたときの動作を選びます。
+Ask every time|Tanyakan setiap kali|毎回確認
+Glacia password|Kata sandi Glacia|Glacia のパスワード
+Create Glacia password|Buat kata sandi Glacia|Glacia のパスワードを作成
+Confirm Glacia password|Konfirmasi kata sandi Glacia|Glacia のパスワードを確認
+One password for Glacia.|Satu kata sandi untuk Glacia.|Glacia のパスワードを1つに。
+Change Glacia password|Ubah kata sandi Glacia|Glacia のパスワードを変更
+Change password|Ubah kata sandi|パスワードを変更
+Old password|Kata sandi lama|現在のパスワード
+New password|Kata sandi baru|新しいパスワード
+Confirm new password|Konfirmasi kata sandi baru|新しいパスワードを確認
+Previous sync password|Kata sandi sinkronisasi sebelumnya|以前の同期パスワード
+Save new password|Simpan kata sandi baru|新しいパスワードを保存
+Your Glacia password has been changed.|Kata sandi Glacia telah diubah.|Glacia のパスワードを変更しました。
+Unlock Google sync|Buka sinkronisasi Google|Google 同期を解除
+Finish password change|Selesaikan perubahan kata sandi|パスワード変更を完了
+Start quietly in the system tray when you sign in to Windows.|Mulai diam-diam di baki sistem saat masuk ke Windows.|Windows へのサインイン時にトレイで起動します。
+Restoring a backup from an older Glacia version?|Memulihkan cadangan dari versi Glacia lama?|旧バージョンの Glacia のバックアップを復元しますか？
+Your previous sync password is needed only for this upgrade. Your keys will be kept.|Kata sandi sinkronisasi sebelumnya hanya diperlukan saat peningkatan ini. Kunci Anda tetap tersimpan.|以前の同期パスワードはこの移行時だけ必要です。キーは保持されます。
+Use one password for your local vault and Google sync. Your keys and settings will be kept.|Gunakan satu kata sandi untuk brankas lokal dan sinkronisasi Google. Kunci dan pengaturan tetap tersimpan.|ローカル保管庫と Google 同期に同じパスワードを使います。キーと設定は保持されます。
+One password for your vault and Google sync.|Satu kata sandi untuk brankas dan sinkronisasi Google.|保管庫と Google 同期に1つのパスワードを使います。
+Enter your Glacia password to connect this vault.|Masukkan kata sandi Glacia untuk menghubungkan brankas ini.|Glacia のパスワードを入力してこの保管庫を接続します。
+One Glacia password protects your local vault and unlocks Google sync.|Satu kata sandi Glacia melindungi brankas lokal dan membuka sinkronisasi Google.|1つの Glacia パスワードでローカル保管庫と Google 同期を利用できます。
+Keep your Glacia password somewhere safe. Google sign-in cannot recover it.|Simpan kata sandi Glacia di tempat aman. Login Google tidak dapat memulihkannya.|Glacia のパスワードを安全な場所に保管してください。Google ログインでは復元できません。
+Locking clears sensitive keys from memory.|Mengunci brankas menghapus kunci sensitif dari memori.|ロックすると機密キーがメモリから消去されます。
+Google sign-in alone cannot decrypt your vault. Your Glacia password is needed to restore it.|Login Google saja tidak dapat membuka brankas. Kata sandi Glacia diperlukan untuk memulihkannya.|Google ログインだけでは保管庫を復号できません。復元には Glacia のパスワードが必要です。
+Enter your Glacia password once on this PC. Sync resumes after you reopen your vault.|Masukkan kata sandi Glacia sekali di PC ini. Sinkronisasi dilanjutkan setelah brankas dibuka kembali.|この PC で Glacia のパスワードを一度入力します。保管庫を再度開くと同期が再開します。
+Unlocks your local vault and Google sync. Use at least 6 characters.|Membuka brankas lokal dan sinkronisasi Google. Gunakan minimal 6 karakter.|ローカル保管庫と Google 同期を解除します。6文字以上を使用してください。
+Use the same Glacia password on your computers. For an older cloud backup, enter its previous sync password once during the upgrade.|Gunakan kata sandi Glacia yang sama di setiap komputer. Untuk cadangan cloud lama, masukkan kata sandi sinkronisasi sebelumnya sekali saat peningkatan.|各 PC で同じ Glacia パスワードを使います。旧クラウドバックアップは移行時に以前の同期パスワードを一度入力します。
+An exported backup keeps its own password, including backups made before a password change. Glacia cannot recover forgotten passwords.|Cadangan yang diekspor tetap menggunakan kata sandinya sendiri, termasuk cadangan sebelum perubahan kata sandi. Glacia tidak dapat memulihkan kata sandi yang terlupa.|エクスポートしたバックアップは変更前のものも含め保存時のパスワードを使います。Glacia は忘れたパスワードを復元できません。
+On a new PC, sign in with the same Google account and choose Restore a Glacia cloud backup. Select your cloud vault and enter your Glacia password.|Di PC baru, masuk dengan akun Google yang sama dan pilih Pulihkan cadangan cloud Glacia. Pilih brankas cloud dan masukkan kata sandi Glacia.|新しい PC で同じ Google アカウントにログインし、Glacia クラウドバックアップの復元を選びます。保管庫を選択して Glacia のパスワードを入力します。
+Reconnect to Google to finish your password change. Your encrypted vault is preserved.|Hubungkan kembali ke Google untuk menyelesaikan perubahan kata sandi. Brankas terenkripsi tetap tersimpan.|Google に再接続してパスワード変更を完了してください。暗号化された保管庫は保持されています。
+Password recovery data could not be read. Your encrypted vault is preserved.|Data pemulihan kata sandi tidak dapat dibaca. Brankas terenkripsi tetap tersimpan.|パスワードの復旧情報を読み取れませんでした。暗号化された保管庫は保持されています。
+Your accounts are encrypted before uploading to Glacia’s private Google Drive app data. Use your Glacia password on every computer.|Akun dienkripsi sebelum diunggah ke data aplikasi privat Glacia di Google Drive. Gunakan kata sandi Glacia di setiap komputer.|アカウントは Google Drive の Glacia 専用データへ送信する前に暗号化されます。各 PC で Glacia のパスワードを使います。
+Sync runs while Glacia is open, unlocked, and online. Locking clears sensitive keys from memory.|Sinkronisasi berjalan saat Glacia terbuka, brankas tidak terkunci, dan terhubung ke internet. Mengunci brankas menghapus kunci sensitif dari memori.|Glacia が開き、ロック解除され、オンラインの間に同期します。ロックすると機密キーがメモリから消去されます。
+Windows secure storage is unavailable.|Penyimpanan aman Windows tidak tersedia.|Windows の安全な保存領域が利用できません。
+The cloud password record is invalid.|Data kata sandi cloud tidak valid.|クラウドのパスワード情報が無効です。
+Incorrect Glacia password for this cloud vault.|Kata sandi Glacia untuk brankas cloud ini salah.|このクラウド保管庫の Glacia パスワードが正しくありません。
+Conflicting cloud password records. Contact Glacia support.|Data kata sandi cloud bertentangan. Hubungi dukungan Glacia.|クラウドのパスワード情報が競合しています。Glacia サポートにお問い合わせください。
+Invalid cloud password record.|Data kata sandi cloud tidak valid.|クラウドのパスワード情報が無効です。
+Could not read the cloud password record.|Data kata sandi cloud tidak dapat dibaca.|クラウドのパスワード情報を読み取れませんでした。
+This cloud vault needs the one-password upgrade.|Brankas cloud ini perlu ditingkatkan ke satu kata sandi.|このクラウド保管庫は共通パスワードへの移行が必要です。
+Cloud password changed on another computer. Unlock it again.|Kata sandi cloud diubah di komputer lain. Buka kembali brankasnya.|別の PC でクラウドのパスワードが変更されました。再度解除してください。
+Sign in to the original Google account to finish this password change.|Masuk ke akun Google semula untuk menyelesaikan perubahan kata sandi ini.|元の Google アカウントにログインしてパスワード変更を完了してください。
+Invalid cloud encryption key.|Kunci enkripsi cloud tidak valid.|クラウドの暗号化キーが無効です。
+Invalid password transaction.|Proses perubahan kata sandi tidak valid.|パスワード変更の記録が無効です。
+The previous sync passwords do not match.|Kata sandi sinkronisasi sebelumnya tidak cocok.|以前の同期パスワードが一致しません。
 `;
 for(const row of messages.trim().split('\n')){const [source,id,ja]=row.split('|');if(!source||!id||!ja)throw Error('Invalid translation row: '+source);if(catalog[source])throw Error('Duplicate translation: '+source);catalog[source]={id,ja};}
 const templates=Object.keys(catalog).filter(key=>key.includes('{')).map(source=>{const names=[];const pattern=source.split(/(\{\w+\})/).map(part=>{if(/^\{\w+\}$/.test(part)){const name=part.slice(1,-1);names.push(name);return ['count','seconds','period','digits','scanned','total','skipped','line','status'].includes(name)?'(\\d+)':'([\\s\\S]+?)';}return part.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('');return {source,names,pattern:new RegExp('^'+pattern+'$')};});

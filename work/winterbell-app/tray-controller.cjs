@@ -1,6 +1,6 @@
 'use strict';
 const path=require('node:path');const i18n=require('./i18n.js');
-function createTrayController({app,Tray,Menu,BrowserWindow,screen,mainWindow,baseDirectory,getLanguage=()=> 'en',onNavigate=()=>{}}){
+function createTrayController({app,Tray,Menu,BrowserWindow,screen,mainWindow,baseDirectory,getLanguage=()=> 'en',onNavigate=()=>{},onExit=()=>app.quit()}){
  let mini=null,expanded=false,anchor=null,closed=false;
  const tray=new Tray(path.join(baseDirectory,'winterbell.ico'));tray.setToolTip('Glacia Authenticator');
  function openMain(page){if(closed||mainWindow.isDestroyed())return;if(mini&&!mini.isDestroyed())mini.hide();mainWindow.setSkipTaskbar(false);if(mainWindow.isMinimized())mainWindow.restore();mainWindow.show();mainWindow.focus();if(page)onNavigate(page);}
@@ -16,11 +16,12 @@ function createTrayController({app,Tray,Menu,BrowserWindow,screen,mainWindow,bas
   }
   if(closed||!mini||mini.isDestroyed())return;position();mini.webContents.send('winterbell:mini-reset');mini.show();mini.focus();
  }
+ function hideMain(){hideMini();mainWindow.setSkipTaskbar(true);mainWindow.hide();}
  function hideMini(){if(mini&&!mini.isDestroyed()){mini.hide();resize(false);}}
  mainWindow.on('minimize',()=>{mainWindow.setSkipTaskbar(true);mainWindow.hide();});
  tray.on('click',(_event,bounds)=>{showMini(bounds).catch(()=>openMain());});
- function updateLanguage(){const t=text=>i18n.translate(text,getLanguage());tray.setContextMenu(Menu.buildFromTemplate([{label:t('Open Glacia'),click:()=>openMain()},{label:t('Settings'),click:()=>openMain('settings')},{type:'separator'},{label:t('Exit'),click:()=>app.quit()}]));}
+ function updateLanguage(){const t=text=>i18n.translate(text,getLanguage());tray.setContextMenu(Menu.buildFromTemplate([{label:t('Open Glacia'),click:()=>openMain()},{label:t('Settings'),click:()=>openMain('settings')},{type:'separator'},{label:t('Exit'),click:onExit}]));}
  updateLanguage();
- return {tray,updateLanguage,openMain,hideMini,resize,get miniWindow(){return mini;},broadcast(channel,payload){if(!mainWindow.isDestroyed())mainWindow.webContents.send(channel,payload);if(mini&&!mini.isDestroyed())mini.webContents.send(channel,payload);},dispose(){closed=true;if(mini&&!mini.isDestroyed())mini.destroy();if(!tray.isDestroyed())tray.destroy();}};
+ return {tray,updateLanguage,openMain,hideMain,hideMini,resize,get miniWindow(){return mini;},broadcast(channel,payload){if(!mainWindow.isDestroyed())mainWindow.webContents.send(channel,payload);if(mini&&!mini.isDestroyed())mini.webContents.send(channel,payload);},dispose(){closed=true;if(mini&&!mini.isDestroyed())mini.destroy();if(!tray.isDestroyed())tray.destroy();}};
 }
 module.exports={createTrayController};

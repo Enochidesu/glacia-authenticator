@@ -1,9 +1,11 @@
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
 New-Item -ItemType Directory -Path (Join-Path $projectRoot 'validation') -Force | Out-Null
-$publicExe = Join-Path $projectRoot 'outputs/Glacia Authenticator Public v0.4.3/Glacia Authenticator.exe'
+$publicExe = Join-Path $projectRoot 'outputs/Glacia Authenticator Public v0.5.0/Glacia Authenticator.exe'
 $syntheticProfile = Join-Path $PSScriptRoot ('public-launch-native-' + [guid]::NewGuid())
 New-Item -ItemType Directory -Path $syntheticProfile | Out-Null
+# The launch probe exits without a user prompt; real profiles keep their preference.
+[IO.File]::WriteAllText((Join-Path $syntheticProfile 'preferences.json'),'{"closeBehavior":"exit"}',(New-Object Text.UTF8Encoding($false)))
 $env:WINTERBELL_DATA_DIR = $syntheticProfile
 try {
     # This check exercises the real interactive app window, including its title.

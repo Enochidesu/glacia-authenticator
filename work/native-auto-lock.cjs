@@ -1,6 +1,6 @@
 'use strict';
 const electron=require('electron'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),assert=require('node:assert/strict');
-const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.4.3/resources/app'),restart=process.argv[2]==='restart';
+const appDir=path.resolve(__dirname,'../outputs/Glacia Authenticator v0.5.0/resources/app'),restart=process.argv[2]==='restart';
 const resultFile=path.join(__dirname,restart?'native-auto-lock-restart-result.json':'native-auto-lock-result.json');
 const profileName=restart?JSON.parse(fs.readFileSync(path.join(__dirname,'native-auto-lock-result.json'),'utf8')).profileName:'autolock-native-'+Date.now()+'-'+process.pid;
 assert.match(profileName,/^autolock-native-\d+-\d+$/);process.env.WINTERBELL_DATA_DIR=path.join(__dirname,profileName);
